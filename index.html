@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#101a17">
+  <title>PRORIS: Epochs of Life</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game-shell">
+    <canvas id="world" aria-label="Prehistoric wilderness game"></canvas>
+    <div class="vignette"></div>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Proris home"><span class="brand-mark">P</span><span>PRORIS<small>EPOCHS OF LIFE</small></span></a>
+      <div class="world-meta"><span class="live-dot"></span><span id="season-label">THE FIRST THAW</span><i></i><span id="time-label">DAY 01 · 08:14</span><i></i><span class="world-id">WORLD 07</span></div>
+      <button class="icon-button" id="map-toggle" title="Toggle map (M)">⌖</button>
+    </header>
+    <section class="hud-left" aria-label="Survival status">
+      <div class="player-chip"><div class="species-avatar" id="species-avatar">✦</div><div><span class="eyebrow">YOUR SPECIES</span><strong id="species-name">SKYCLAW</strong></div><span class="level-pill" id="level-pill">LV 01</span></div>
+      <div class="bars">
+        <div class="bar-row"><span class="stat-icon health">♥</span><div class="bar-track"><div class="bar-fill health-fill" id="health-bar"></div></div><span class="bar-value" id="health-value">100</span></div>
+        <div class="bar-row"><span class="stat-icon hunger">◒</span><div class="bar-track"><div class="bar-fill hunger-fill" id="hunger-bar"></div></div><span class="bar-value" id="hunger-value">100</span></div>
+        <div class="bar-row"><span class="stat-icon thirst">◈</span><div class="bar-track"><div class="bar-fill thirst-fill" id="thirst-bar"></div></div><span class="bar-value" id="thirst-value">100</span></div>
+        <div class="bar-row"><span class="stat-icon stamina">ϟ</span><div class="bar-track"><div class="bar-fill stamina-fill" id="stamina-bar"></div></div><span class="bar-value" id="stamina-value">100</span></div>
+      </div>
+      <div class="dna-card"><div class="dna-icon">⌬</div><div class="dna-copy"><span class="eyebrow">EVOLUTION DNA</span><strong><span id="dna-count">0</span> <small>DNA</small></strong></div><button id="evolve-shortcut" title="Open evolution (E)">＋</button></div>
+    </section>
+    <section class="hud-right">
+      <div class="event-card"><span class="event-icon" id="event-icon">☀</span><div><span class="eyebrow">WORLD EVENT</span><strong id="event-name">MIGRATION SEASON</strong><small id="event-description">Herds gather at the river</small></div></div>
+      <div class="minimap-wrap"><div class="minimap-title"><span>FIELD SURVEY</span><span class="compass">N ↑</span></div><canvas id="minimap" width="180" height="180"></canvas><div class="map-coords" id="map-coords">68.2° N · 24.7° E</div></div>
+      <div class="territory"><span class="territory-dot"></span><div><span class="eyebrow">TERRITORY</span><strong id="territory-label">FERNHEART BASIN</strong></div><span class="territory-status">SAFE</span></div>
+    </section>
+    <div class="objective"><div class="objective-mark">✧</div><div><span class="eyebrow">FIELD OBJECTIVE <b>01</b></span><strong id="objective-text">Gather fossil energy</strong><small>Seek glowing deposits to evolve your lineage</small></div><span class="objective-count" id="objective-count">0 / 3</span></div>
+    <div class="interaction-prompt" id="interaction-prompt"></div>
+    <div class="toast" id="toast"></div>
+    <div class="controls-hint"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> MOVE</span><i></i><span><kbd>SPACE</kbd> HUNT</span><i></i><span><kbd>F</kbd> INTERACT</span><i></i><span><kbd>SHIFT</kbd> SPRINT</span><i></i><span><kbd>E</kbd> EVOLVE</span></div>
+    <div class="touch-controls" id="touch-controls"><div class="touch-pad"><button data-dir="up">▲</button><div><button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button></div></div><div class="touch-actions"><button id="touch-hunt">HUNT</button><button id="touch-sprint">RUN</button></div></div>
+    <div class="modal-layer" id="start-modal">
+      <div class="intro-panel">
+        <div class="intro-copy"><div class="overline"><span></span> A LIVING WORLD · 12,000 YEARS BEFORE US</div><h1>THE WILD<br><em>REMEMBERS.</em></h1><p>Become the creature. Claim your place in a world still being written by tooth, claw, and instinct.</p><div class="intro-stats"><div><strong>04</strong><span>LINEAGES</span></div><i></i><div><strong>01</strong><span>SHARED WORLD</span></div><i></i><div><strong>∞</strong><span>WAYS TO EVOLVE</span></div></div></div>
+        <div class="lineage-select"><div class="select-heading"><div><span class="eyebrow">CHOOSE YOUR LINEAGE</span><h2>Where life begins</h2></div><span class="step-count">01 <i>/</i> 02</span></div>
+          <div class="class-grid">
+            <button class="class-card selected" data-class="avian"><span class="class-glyph">♢</span><span class="class-name">AVIAN</span><span class="class-creature">Skyclaw · Pterosaur</span><span class="class-trait">AERIAL SCOUT</span><span class="class-desc">See farther. Strike from above. The whole world is your horizon.</span><span class="class-stat"><i style="width:75%"></i></span></button>
+            <button class="class-card" data-class="mammal"><span class="class-glyph">♧</span><span class="class-name">MAMMAL</span><span class="class-creature">Fang · Smilodon</span><span class="class-trait">PACK HUNTER</span><span class="class-desc">Run as one. Endure the cold. The night belongs to you.</span><span class="class-stat"><i style="width:60%"></i></span></button>
+            <button class="class-card" data-class="amphibian"><span class="class-glyph">≈</span><span class="class-name">AMPHIBIAN</span><span class="class-creature">Mireborn · Diplocaulus</span><span class="class-trait">SWAMP STALKER</span><span class="class-desc">Breathe beneath the surface. Vanish in the mud. Own the waterways.</span><span class="class-stat"><i style="width:85%"></i></span></button>
+            <button class="class-card" data-class="reptile"><span class="class-glyph">◈</span><span class="class-name">REPTILE</span><span class="class-creature">Ridgeback · Young Rex</span><span class="class-trait">APEX BRUISER</span><span class="class-desc">Armor and force. The ground shifts when you decide to move.</span><span class="class-stat"><i style="width:95%"></i></span></button>
+          </div>
+          <div class="selection-footer"><div class="selection-note"><span>✦</span><span>Each lineage has a distinct survival advantage<br>and a unique path to apex.</span></div><button class="begin-button" id="begin-button"><span>ENTER THE WILD</span><b>→</b></button></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-layer hidden" id="evolution-modal"><div class="evolution-panel"><button class="close-modal" id="close-evolution">×</button><span class="eyebrow">YOUR LINEAGE · EVOLUTION TREE</span><h2>Become more.</h2><p class="evolution-intro">Spend DNA earned through survival and hunting to adapt your body.</p><div class="evolution-grid" id="evolution-grid"></div><div class="evolution-footer"><span>AVAILABLE <strong id="evolution-dna">0 DNA</strong></span><span class="evolution-tip">Press <kbd>E</kbd> to close</span></div></div></div>
+    <div class="modal-layer hidden" id="death-modal"><div class="death-panel"><span class="eyebrow">THE WORLD KEEPS MOVING</span><h2>Life finds<br><em>a way.</em></h2><p>Your lineage returns to the basin. Your earned DNA survives.</p><button class="begin-button" id="respawn-button"><span>RETURN TO THE WILD</span><b>→</b></button></div></div>
+    <aside class="feed" id="feed" aria-live="polite"></aside>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
