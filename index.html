@@ -1,36 +1,3196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>AETHER ENGINE // Survival Sandbox</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-:root{--cyan:#62e8ff;--mint:#72f5c2;--amber:#ffca76;--red:#ff6677}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071018;color:#e8f6fa;font-family:Inter,system-ui,sans-serif;user-select:none;-webkit-user-select:none}#world{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}.mono{font-family:'JetBrains Mono',monospace}.glass{background:linear-gradient(135deg,rgba(8,20,29,.82),rgba(8,15,24,.66));border:1px solid rgba(164,229,242,.16);box-shadow:0 12px 42px #0005;backdrop-filter:blur(14px)}.hud{position:fixed;z-index:3;pointer-events:none}.label{font-size:9px;letter-spacing:.2em;color:#9ebbc2;font-weight:700}.value{font-family:'JetBrains Mono',monospace}.bar{height:5px;background:#ffffff1a;border-radius:9px;overflow:hidden}.bar>i{height:100%;display:block;border-radius:9px;transition:width .25s}.world-vignette{position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at center,transparent 45%,rgba(3,8,14,.5) 100%)}.scanlines{position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.1;background:repeating-linear-gradient(0deg,transparent 0 3px,#b9f1ff0b 4px)}#start,#end{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,rgba(3,9,15,.9),rgba(3,10,16,.48)),radial-gradient(ellipse at 75% 45%,#1c627067,transparent 50%);padding:24px}.card{width:min(540px,100%);padding:clamp(24px,5vw,46px);border-radius:20px}.eyebrow{font:700 10px 'JetBrains Mono',monospace;letter-spacing:.24em;color:var(--cyan)}h1{font-size:clamp(40px,7vw,72px);line-height:.95;letter-spacing:-.07em;margin:15px 0 18px;font-weight:800}.subtitle{color:#b4cad0;font-size:14px;line-height:1.75;max-width:390px}.primary{border:0;border-radius:9px;padding:14px 20px;background:linear-gradient(100deg,#59ddf6,#7af2c4);color:#08202a;font-size:11px;font-weight:800;letter-spacing:.16em;cursor:pointer;box-shadow:0 8px 26px #52d8e844;transition:transform .15s,filter .15s}.primary:hover{transform:translateY(-2px);filter:brightness(1.08)}.key{font:700 9px 'JetBrains Mono',monospace;color:#d9f6fc;border:1px solid #ffffff2a;border-bottom-width:2px;border-radius:4px;padding:4px 6px;background:#ffffff0b}.control-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid #ffffff0d;font-size:11px;color:#a8bec5}.control-row:last-child{border:0}.objective-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}#toast{position:fixed;z-index:8;left:50%;top:18%;transform:translate(-50%,-6px);opacity:0;transition:.25s;pointer-events:none;background:#07151ee8;border:1px solid #81eaff4d;border-radius:99px;padding:10px 16px;font:700 10px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#c9f8ff;white-space:nowrap}#toast.show{opacity:1;transform:translate(-50%,0)}#prompt{position:fixed;z-index:4;left:50%;top:57%;transform:translateX(-50%);opacity:0;transition:opacity .15s;pointer-events:none;background:#06121bd9;border:1px solid #a9efff3d;border-radius:7px;padding:8px 12px;font:700 10px 'JetBrains Mono',monospace;white-space:nowrap}.mobile-controls{display:none;position:fixed;inset:auto 0 18px;z-index:5;pointer-events:none;justify-content:space-between;align-items:end;padding:0 20px}.joy{width:120px;height:120px;border-radius:50%;border:1px solid #ffffff35;background:#06131d55;backdrop-filter:blur(5px);pointer-events:auto;touch-action:none;position:relative}.joy:after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;background:#90e8f344;border:1px solid #b8f5ff70;left:50%;top:50%;transform:translate(-50%,-50%)}.touch-actions{display:flex;gap:10px;align-items:end;pointer-events:auto}.touch-btn{width:58px;height:58px;border-radius:50%;border:1px solid #ffffff44;background:#06131d9c;color:white;font:700 9px 'JetBrains Mono',monospace;touch-action:none}.touch-btn.action{width:68px;height:68px;background:#5ce7e62b;border-color:#76efff80;color:#b8f8ff}#map{width:112px;height:112px;border-radius:50%;border:1px solid #97e9f64d;background:#06131dbb;box-shadow:0 0 24px #0008}#map canvas{border-radius:50%}#pause{position:fixed;z-index:9;inset:0;display:none;align-items:center;justify-content:center;background:#03090bb8;backdrop-filter:blur(8px)}@media(max-width:700px){.mobile-controls{display:flex}.hud-top{top:12px!important;left:12px!important;right:12px!important}.hud-right{display:none}.hud-bottom{bottom:155px!important;left:12px!important}.mobile-map{display:none}.center-hud{top:14px!important}.desktop-hint{display:none!important}.card{max-width:480px}#prompt{top:53%}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISLA PRIMORDIAL // Hyper-Realistic Prehistoric Dinosaur Survival Engine</title>
+    <!-- Tailwind CSS for sleek UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for crisp iconography -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050605;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Custom Range Slider Styling - Obsidian & Amber Theme */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #f59e0b;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.85);
+            transition: transform 0.12s ease;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.22);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 2px;
+        }
+        /* Obsidian Glassmorphism Panels */
+        .obsidian-panel {
+            background: rgba(10, 12, 11, 0.80);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(245, 158, 11, 0.16);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.25);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.35);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 158, 11, 0.7);
+        }
+        /* Night Vision / Scent Pulse Vignette */
+        #scent-vignette {
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.04) 45%, rgba(6, 78, 59, 0.42) 100%);
+            transition: opacity 0.4s ease;
+        }
+    </style>
+
+    <!-- Import Map for Three.js & Post-Processing -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
 </head>
-<body>
-<div id="world"></div><div class="world-vignette"></div><div class="scanlines"></div>
-<div class="hud hud-top" style="top:20px;left:22px;right:22px;display:flex;justify-content:space-between;align-items:flex-start">
-  <div class="glass" style="padding:12px 15px;border-radius:11px;min-width:190px"><div style="display:flex;align-items:center;gap:9px"><span style="color:var(--cyan);font-size:17px">✳</span><div><div class="mono" style="font-size:12px;font-weight:700;letter-spacing:.12em">AETHER <span style="color:var(--cyan)">ENGINE</span></div><div class="label" style="font-size:8px;margin-top:3px">FRONTIER SURVIVAL // 01</div></div></div></div>
-  <div class="glass center-hud" style="position:absolute;left:50%;top:0;transform:translateX(-50%);padding:10px 17px;border-radius:10px;text-align:center;min-width:145px"><div class="label">LOCAL TIME</div><div class="mono" id="clock" style="font-size:14px;margin-top:3px">06:00</div></div>
-  <div class="glass hud-right" style="padding:11px 14px;border-radius:10px;display:flex;gap:17px"><div><div class="label">SECTOR</div><div class="mono" id="sector" style="font-size:11px;margin-top:4px">NORTH RIDGE</div></div><div style="width:1px;background:#ffffff1b"></div><div><div class="label">WEATHER</div><div class="mono" style="font-size:11px;margin-top:4px;color:#a8edff">CLEAR / 18°C</div></div></div>
-</div>
-<div class="hud" style="left:22px;top:104px;width:210px"><div class="glass" style="border-radius:11px;padding:13px 15px"><div class="label" style="display:flex;justify-content:space-between"><span>VITALS</span><span id="healthNum" style="color:var(--mint)">100%</span></div><div class="bar" style="margin:8px 0 13px"><i id="healthBar" style="width:100%;background:linear-gradient(90deg,#55e5b3,#b2f6cc)"></i></div><div class="label" style="display:flex;justify-content:space-between"><span>STAMINA</span><span id="staminaNum" style="color:var(--cyan)">100%</span></div><div class="bar" style="margin:8px 0 0"><i id="staminaBar" style="width:100%;background:linear-gradient(90deg,#4dcfff,#8cf3ff)"></i></div></div>
-<div class="glass" style="margin-top:9px;border-radius:11px;padding:12px 15px"><div class="label">FIELD PACK</div><div style="display:flex;gap:15px;margin-top:9px"><div style="font-size:11px;color:#cce0e5">◈ <span id="crystalCount" class="mono" style="color:#7cefff">0</span> <span class="label" style="font-size:8px">SHARDS</span></div><div style="font-size:11px;color:#cce0e5">▰ <span id="woodCount" class="mono" style="color:#d8b27b">0</span> <span class="label" style="font-size:8px">FIBER</span></div></div></div></div>
-<div class="hud hud-bottom" style="left:22px;bottom:22px"><div class="glass" style="border-radius:11px;padding:12px 14px;width:240px"><div style="display:flex;align-items:center;gap:8px"><span class="objective-dot"></span><div class="label">PRIMARY DIRECTIVE</div></div><div id="objective" style="font-size:12px;font-weight:700;margin:9px 0 5px">Find the signal beacons</div><div id="objectiveSub" style="font-size:10px;line-height:1.5;color:#a7bec4">Three dormant beacons are scattered across the valley.</div><div style="display:flex;gap:5px;margin-top:11px" id="beaconDots"><span class="beacon-dot"></span><span class="beacon-dot"></span><span class="beacon-dot"></span></div></div></div>
-<div class="hud" style="right:22px;bottom:22px;display:flex;align-items:end;gap:12px" class="mobile-map"><canvas id="map" width="224" height="224"></canvas><div class="glass desktop-hint" style="border-radius:10px;padding:10px 12px;font:9px 'JetBrains Mono',monospace;color:#a9c1c7;line-height:1.9"><div><span class="key">WASD</span> MOVE</div><div><span class="key">SHIFT</span> SPRINT</div><div><span class="key">E</span> INTERACT</div><div><span class="key">SPACE</span> JUMP</div><div><span class="key">ESC</span> PAUSE</div></div></div>
-<div id="crosshair" class="hud" style="left:50%;top:50%;width:18px;height:18px;transform:translate(-50%,-50%);opacity:0"><span style="position:absolute;left:8px;top:0;width:2px;height:18px;background:#e8ffffbb;box-shadow:0 0 7px #8dfaff"></span><span style="position:absolute;left:0;top:8px;width:18px;height:2px;background:#e8ffffbb;box-shadow:0 0 7px #8dfaff"></span></div>
-<div id="prompt"></div><div id="toast"></div>
-<div class="mobile-controls"><div class="joy" id="joy"></div><div class="touch-actions"><button class="touch-btn" id="jumpBtn">JUMP</button><button class="touch-btn" id="sprintBtn">RUN</button><button class="touch-btn action" id="interactBtn">USE</button></div></div>
-<div id="start"><div class="card glass"><div class="eyebrow">AETHER FRONTIER / FIELD BRIEF 001</div><h1>THE WILD<br><span style="color:var(--cyan)">IS AWAKE.</span></h1><p class="subtitle">A remote valley. Three silent beacons. A strange signal is waking the old machines. Scavenge what you can, restore the network, and make it through the night.</p><div style="display:flex;gap:10px;align-items:center;margin:25px 0 21px"><span style="width:35px;height:1px;background:#7deeff"></span><span class="label">YOUR MISSION</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px"><div style="padding:12px;border:1px solid #ffffff15;border-radius:8px"><div style="color:var(--cyan);font-size:18px">◈</div><div class="label" style="margin-top:6px">SCAVENGE</div><div style="font-size:9px;color:#9fb5bb;margin-top:4px">Gather aether shards</div></div><div style="padding:12px;border:1px solid #ffffff15;border-radius:8px"><div style="color:var(--mint);font-size:18px">⌁</div><div class="label" style="margin-top:6px">RESTORE</div><div style="font-size:9px;color:#9fb5bb;margin-top:4px">Power all 3 beacons</div></div><div style="padding:12px;border:1px solid #ffffff15;border-radius:8px"><div style="color:var(--amber);font-size:18px">◉</div><div class="label" style="margin-top:6px">SURVIVE</div><div style="font-size:9px;color:#9fb5bb;margin-top:4px">Avoid the sentinels</div></div></div><button id="startBtn" class="primary" style="width:100%">ENTER THE FRONTIER&nbsp;&nbsp; →</button><div style="margin-top:15px;text-align:center" class="label">WASD TO MOVE · MOUSE TO LOOK · E TO INTERACT</div></div></div>
-<div id="pause"><div class="card glass" style="max-width:380px;text-align:center"><div class="eyebrow">FIELD PAUSED</div><h2 style="font-size:36px;margin:12px 0 6px;letter-spacing:-.05em">Catch your breath.</h2><p class="subtitle" style="margin:0 auto 23px">The valley waits. Your progress is safe.</p><button class="primary" id="resumeBtn" style="width:100%">RESUME EXPEDITION</button></div></div>
-<div id="end" style="display:none"><div class="card glass" style="max-width:500px;text-align:center"><div id="endTag" class="eyebrow">SIGNAL RESTORED</div><h2 id="endTitle" style="font-size:clamp(38px,7vw,58px);letter-spacing:-.06em;margin:14px 0">The valley is yours.</h2><p id="endText" class="subtitle" style="margin:0 auto 25px">All beacons are online. The signal carries beyond the ridge.</p><button id="restartBtn" class="primary" style="width:100%">PLAY AGAIN</button></div></div>
-<script type="importmap">
- {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
- </script>
- <script type="module" src="./game.js"></script>
+<body class="text-stone-100">
+
+    <!-- WebGL Container -->
+    <div id="canvas-container" class="fixed inset-0 z-0"></div>
+
+    <!-- Primal Night-Vision / Scent Overlay Vignette -->
+    <div id="scent-vignette" class="fixed inset-0 pointer-events-none z-10 opacity-0"></div>
+
+    <!-- Subtle Center Reticle -->
+    <div id="crosshair" class="fixed inset-0 pointer-events-none z-10 flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="w-1.5 h-1.5 bg-amber-300/80 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.9)]"></div>
+        <div id="interact-prompt" class="absolute mt-12 px-3.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-amber-500/30 text-[11px] font-semibold tracking-wider text-amber-300 hidden">
+            [E] ROAR / CALL
+        </div>
+    </div>
+
+    <!-- Top-Center Prehistoric Compass Bar -->
+    <div class="fixed top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none hidden md:flex flex-col items-center">
+        <div class="obsidian-panel px-5 py-1.5 rounded-full flex items-center gap-4 text-[11px] mono tracking-widest border border-amber-500/20">
+            <span class="text-stone-500">NW</span>
+            <span class="text-stone-400">•</span>
+            <span id="compass-heading" class="text-amber-400 font-bold">N 000°</span>
+            <span class="text-stone-400">•</span>
+            <span class="text-stone-500">NE</span>
+        </div>
+    </div>
+
+    <!-- Top-Left Telemetry & Primal Status HUD -->
+    <div class="fixed top-4 left-4 z-20 pointer-events-none flex flex-col gap-2">
+        <div class="obsidian-panel px-4 py-2.5 rounded-xl flex items-center gap-4">
+            <div>
+                <div class="text-[10px] uppercase tracking-widest text-amber-400/90 font-bold">ISLA PRIMORDIAL</div>
+                <div class="text-xs text-stone-300 font-medium">ALLOSAURUS FRAGILIS // 100% ADULT</div>
+            </div>
+            <div class="h-6 w-[1px] bg-white/10"></div>
+            <div class="mono text-xs flex gap-3">
+                <div>
+                    <span class="text-stone-400">FPS:</span>
+                    <span id="hud-fps" class="text-emerald-400 font-bold">60</span>
+                </div>
+                <div class="hidden sm:block">
+                    <span class="text-stone-400">MS:</span>
+                    <span id="hud-ms" class="text-stone-200">16.6</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- World Time, Scent & Stance Status -->
+        <div class="obsidian-panel px-4 py-2 rounded-xl flex items-center justify-between gap-4 text-xs mono">
+            <div class="flex items-center gap-2">
+                <i id="time-icon" class="fas fa-sun text-amber-400"></i>
+                <span id="hud-time">10:30</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <i id="scent-icon" class="fas fa-eye text-stone-500"></i>
+                <span id="hud-scent" class="text-stone-400">SENSE [F]</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-amber-300/90">
+                <span id="hud-stance">STAND</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top-Right Quick Camera & Graphics Buttons -->
+    <div class="fixed top-4 right-4 z-20 flex gap-2">
+        <button id="btn-toggle-cam" class="obsidian-panel hover:bg-white/10 active:scale-95 transition-all px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wider flex items-center gap-2 cursor-pointer border border-amber-500/25">
+            <i class="fas fa-video text-amber-400"></i>
+            <span id="hud-cam-mode">3RD PERSON [V]</span>
+        </button>
+        <button id="btn-open-settings" class="obsidian-panel hover:bg-white/10 active:scale-95 transition-all px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wider flex items-center gap-2 cursor-pointer border border-amber-500/25">
+            <i class="fas fa-sliders-h text-amber-400"></i>
+            <span>GRAPHICS [ESC]</span>
+        </button>
+    </div>
+
+    <!-- Bottom-Left Dinosaur Survival Vitals ('The Isle' Style) -->
+    <div class="fixed bottom-4 left-4 z-20 pointer-events-none hidden sm:flex flex-col gap-2 w-72">
+        <div class="obsidian-panel p-3.5 rounded-2xl space-y-2.5 border border-amber-500/20">
+            <!-- Health -->
+            <div>
+                <div class="flex justify-between text-[10px] uppercase tracking-wider text-stone-400 mb-1">
+                    <span class="flex items-center gap-1.5"><i class="fas fa-heart text-rose-500"></i> Vital Health</span>
+                    <span class="mono text-rose-400 font-bold">100%</span>
+                </div>
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-rose-600 to-red-400 w-full rounded-full"></div>
+                </div>
+            </div>
+            <!-- Stamina -->
+            <div>
+                <div class="flex justify-between text-[10px] uppercase tracking-wider text-stone-400 mb-1">
+                    <span class="flex items-center gap-1.5"><i class="fas fa-bolt text-amber-400"></i> Stamina</span>
+                    <span id="hud-stamina-text" class="mono text-amber-400 font-bold">100%</span>
+                </div>
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <div id="hud-stamina-bar" class="h-full bg-gradient-to-r from-amber-500 to-yellow-300 w-full rounded-full transition-all duration-75"></div>
+                </div>
+            </div>
+            <!-- Hunger & Hydration -->
+            <div class="grid grid-cols-2 gap-3 pt-0.5">
+                <div>
+                    <div class="flex justify-between text-[9px] uppercase tracking-wider text-stone-400 mb-1">
+                        <span><i class="fas fa-drumstick-bite text-orange-400 mr-1"></i>Hunger</span>
+                        <span id="hud-hunger-text" class="mono text-orange-300">88%</span>
+                    </div>
+                    <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                        <div id="hud-hunger-bar" class="h-full bg-orange-400 w-[88%] rounded-full"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-[9px] uppercase tracking-wider text-stone-400 mb-1">
+                        <span><i class="fas fa-tint text-cyan-400 mr-1"></i>Thirst</span>
+                        <span id="hud-thirst-text" class="mono text-cyan-300">92%</span>
+                    </div>
+                    <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                        <div id="hud-thirst-bar" class="h-full bg-cyan-400 w-[92%] rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom-Right Quick Keybind Bar -->
+    <div class="fixed bottom-4 right-4 z-20 pointer-events-none hidden lg:flex items-center gap-2 text-[10px] mono text-stone-400">
+        <div class="obsidian-panel px-3 py-1.5 rounded-lg border border-white/10">[E / CLICK] ROAR</div>
+        <div class="obsidian-panel px-3 py-1.5 rounded-lg border border-white/10">[C] STALK</div>
+        <div class="obsidian-panel px-3 py-1.5 rounded-lg border border-white/10">[F] NIGHT SENSE</div>
+        <div class="obsidian-panel px-3 py-1.5 rounded-lg border border-white/10">[V] CAMERA</div>
+    </div>
+
+    <!-- Mobile Touch Controls -->
+    <div id="mobile-controls" class="fixed bottom-4 inset-x-4 z-20 flex justify-between items-end md:hidden pointer-events-none">
+        <div class="grid grid-cols-3 gap-1.5 pointer-events-auto">
+            <div></div>
+            <button id="mob-up" class="w-12 h-12 obsidian-panel rounded-xl flex items-center justify-center active:bg-amber-500/40"><i class="fas fa-chevron-up"></i></button>
+            <div></div>
+            <button id="mob-left" class="w-12 h-12 obsidian-panel rounded-xl flex items-center justify-center active:bg-amber-500/40"><i class="fas fa-chevron-left"></i></button>
+            <button id="mob-down" class="w-12 h-12 obsidian-panel rounded-xl flex items-center justify-center active:bg-amber-500/40"><i class="fas fa-chevron-down"></i></button>
+            <button id="mob-right" class="w-12 h-12 obsidian-panel rounded-xl flex items-center justify-center active:bg-amber-500/40"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="flex gap-2 pointer-events-auto">
+            <button id="mob-cam" class="w-12 h-12 obsidian-panel rounded-xl flex items-center justify-center text-amber-400 active:bg-amber-500/40"><i class="fas fa-video"></i></button>
+            <button id="mob-scent" class="w-12 h-12 obsidian-panel rounded-xl flex items-center justify-center text-emerald-400 active:bg-emerald-500/40"><i class="fas fa-eye"></i></button>
+            <button id="mob-roar" class="w-12 h-12 obsidian-panel rounded-xl flex items-center justify-center text-rose-400 active:bg-rose-500/40"><i class="fas fa-volume-up"></i></button>
+            <button id="mob-jump" class="w-14 h-12 obsidian-panel rounded-xl flex items-center justify-center font-bold text-xs active:bg-white/30">JUMP</button>
+        </div>
+    </div>
+
+    <!-- Main Pause / Real-Time Graphics Settings Overlay -->
+    <div id="settings-overlay" class="fixed inset-0 z-30 bg-black/65 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300">
+        <div class="obsidian-panel w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-hidden flex flex-col md:flex-row border border-amber-500/25">
+            
+            <!-- Left Column: Title, Controls Guide & Launch -->
+            <div class="w-full md:w-5/12 p-6 md:p-8 bg-gradient-to-b from-stone-900/95 to-black/95 flex flex-col justify-between border-b md:border-b-0 md:border-r border-white/10">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-bold tracking-widest uppercase mb-4">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                        Prehistoric Survival Simulation
+                    </div>
+                    <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">ISLA <span class="text-amber-400 font-light">PRIMORDIAL</span></h1>
+                    <p class="text-xs text-stone-400 leading-relaxed mb-6">
+                        Hyper-realistic dinosaur survival sandbox inspired by <em>The Isle</em>. Roam a Cretaceous river valley as an apex Theropod alongside living Triceratops and Brachiosaurus herds beneath 5 authentic multi-tiered canopy tree species.
+                    </p>
+
+                    <!-- Controls Cheat Sheet -->
+                    <div class="space-y-2 text-xs">
+                        <div class="text-[10px] uppercase tracking-widest text-stone-500 font-bold">Apex Theropod Controls</div>
+                        <div class="flex justify-between items-center py-1 border-b border-white/5">
+                            <span class="text-stone-300">Walk / Strafe / Turn</span>
+                            <span class="mono bg-white/10 px-2 py-0.5 rounded text-stone-200">W A S D + MOUSE</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1 border-b border-white/5">
+                            <span class="text-stone-300">Ambush Sprint / Leap</span>
+                            <span class="mono bg-white/10 px-2 py-0.5 rounded text-stone-200">SHIFT / SPACE</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1 border-b border-white/5">
+                            <span class="text-stone-300">Crouch / Stalk Prey</span>
+                            <span class="mono bg-white/10 px-2 py-0.5 rounded text-stone-200">C</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1 border-b border-white/5">
+                            <span class="text-stone-300">Broadcast Apex Roar</span>
+                            <span class="mono bg-white/10 px-2 py-0.5 rounded text-stone-200">E / CLICK</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1 border-b border-white/5">
+                            <span class="text-stone-300">Primal Night Vision / Scent</span>
+                            <span class="mono bg-white/10 px-2 py-0.5 rounded text-stone-200">F</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1 border-b border-white/5">
+                            <span class="text-stone-300">Switch Camera (3rd / 1st Person)</span>
+                            <span class="mono bg-white/10 px-2 py-0.5 rounded text-stone-200">V</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-stone-300">Drop Meat Chunk / Boulder</span>
+                            <span class="mono bg-white/10 px-2 py-0.5 rounded text-stone-200">G</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-white/10">
+                    <button id="btn-resume" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-stone-950 font-extrabold text-sm tracking-wider uppercase shadow-[0_0_25px_rgba(245,158,11,0.4)] transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2">
+                        <i class="fas fa-play"></i>
+                        <span>ENTER CRETACEOUS VALLEY</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Real-Time Graphics Settings -->
+            <div class="w-full md:w-7/12 p-6 md:p-8 overflow-y-auto space-y-5">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <h2 class="text-lg font-bold tracking-wide text-white flex items-center gap-2">
+                        <i class="fas fa-microchip text-amber-400"></i>
+                        <span>GRAPHICS PIPELINE</span>
+                    </h2>
+                    <!-- Quality Presets -->
+                    <div class="flex gap-1.5">
+                        <button data-preset="low" class="preset-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white/5 hover:bg-white/15 border border-white/10 transition cursor-pointer">LOW</button>
+                        <button data-preset="medium" class="preset-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white/5 hover:bg-white/15 border border-white/10 transition cursor-pointer">MEDIUM</button>
+                        <button data-preset="high" class="preset-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white/5 hover:bg-white/15 border border-white/10 transition cursor-pointer">HIGH</button>
+                        <button data-preset="ultra" class="preset-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/50 transition cursor-pointer">ULTRA</button>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-xs">
+
+                    <!-- Camera Perspective Mode -->
+                    <div class="flex items-center justify-between py-2 border-b border-white/5">
+                        <div>
+                            <div class="text-stone-200 font-medium">Camera Perspective [V]</div>
+                            <div class="text-[10px] text-stone-500">Default 'The Isle' Third-Person Orbital or First-Person Snout</div>
+                        </div>
+                        <select id="set-cam-mode" class="bg-stone-900 border border-white/15 rounded-lg px-3 py-1.5 text-stone-200 mono focus:outline-none focus:border-amber-400">
+                            <option value="tp" selected>THIRD-PERSON (THE ISLE)</option>
+                            <option value="fp">FIRST-PERSON (SNOUT)</option>
+                        </select>
+                    </div>
+
+                    <!-- Water Shader Quality -->
+                    <div class="flex items-center justify-between py-2 border-b border-white/5">
+                        <div>
+                            <div class="text-stone-200 font-medium">GLSL Water & Caustics Quality</div>
+                            <div class="text-[10px] text-stone-500">Fresnel reflections, Beer-Lambert depth absorption & shoreline foam</div>
+                        </div>
+                        <select id="set-water" class="bg-stone-900 border border-white/15 rounded-lg px-3 py-1.5 text-stone-200 mono focus:outline-none focus:border-amber-400">
+                            <option value="low">LOW (SIMPLE SURFACE)</option>
+                            <option value="high" selected>HIGH (WAVES + FOAM + FRESNEL)</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Resolution Scale -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between">
+                            <span class="text-stone-200 font-medium">Render Resolution Scale</span>
+                            <span id="val-res" class="mono text-amber-400 font-bold">100%</span>
+                        </div>
+                        <input id="set-res" type="range" min="0.5" max="1.5" step="0.1" value="1.0" class="w-full">
+                    </div>
+
+                    <!-- Foliage & Grass Density -->
+                    <div class="space-y-1.5 pt-2 border-t border-white/5">
+                        <div class="flex justify-between">
+                            <span class="text-stone-200 font-medium">Botanical Trees, Ferns & Grass Density</span>
+                            <span id="val-foliage" class="mono text-amber-400 font-bold">100%</span>
+                        </div>
+                        <input id="set-foliage" type="range" min="0.2" max="1.0" step="0.1" value="1.0" class="w-full">
+                    </div>
+
+                    <!-- Shadow Map Quality -->
+                    <div class="flex items-center justify-between py-2 border-t border-white/5">
+                        <div>
+                            <div class="text-stone-200 font-medium">Real-Time Shadow Map Resolution</div>
+                            <div class="text-[10px] text-stone-500">PCFSoftShadowMap dynamic canopy & dinosaur shadows</div>
+                        </div>
+                        <select id="set-shadows" class="bg-stone-900 border border-white/15 rounded-lg px-3 py-1.5 text-stone-200 mono focus:outline-none focus:border-amber-400">
+                            <option value="0">OFF</option>
+                            <option value="1024">1024 (MEDIUM)</option>
+                            <option value="2048" selected>2048 (HIGH)</option>
+                            <option value="4096">4096 (ULTRA)</option>
+                        </select>
+                    </div>
+
+                    <!-- Post-Processing Bloom -->
+                    <div class="space-y-1.5 pt-2 border-t border-white/5">
+                        <div class="flex justify-between">
+                            <span class="text-stone-200 font-medium">HDR Bloom & Sun Glint Intensity</span>
+                            <span id="val-bloom" class="mono text-amber-400 font-bold">0.42</span>
+                        </div>
+                        <input id="set-bloom" type="range" min="0" max="1.5" step="0.05" value="0.42" class="w-full">
+                    </div>
+
+                    <!-- Environment Reflections -->
+                    <div class="space-y-1.5 pt-2 border-t border-white/5">
+                        <div class="flex justify-between">
+                            <span class="text-stone-200 font-medium">PBR Specular / IBL Reflections</span>
+                            <span id="val-env" class="mono text-amber-400 font-bold">1.2</span>
+                        </div>
+                        <input id="set-env" type="range" min="0" max="2.5" step="0.1" value="1.2" class="w-full">
+                    </div>
+
+                    <!-- Volumetric Fog Density -->
+                    <div class="space-y-1.5 pt-2 border-t border-white/5">
+                        <div class="flex justify-between">
+                            <span class="text-stone-200 font-medium">Valley Mist / Fog Density</span>
+                            <span id="val-fog" class="mono text-amber-400 font-bold">0.011</span>
+                        </div>
+                        <input id="set-fog" type="range" min="0" max="0.035" step="0.001" value="0.011" class="w-full">
+                    </div>
+
+                    <!-- Time of Day Override & Auto-Cycle -->
+                    <div class="space-y-2 pt-2 border-t border-white/5">
+                        <div class="flex justify-between items-center">
+                            <span class="text-stone-200 font-medium">Solar Time of Day (24h)</span>
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input id="set-autocycle" type="checkbox" checked class="accent-amber-400 rounded">
+                                <span class="text-[11px] text-stone-400">Dynamic Cycle</span>
+                            </label>
+                        </div>
+                        <input id="set-time" type="range" min="0" max="24" step="0.1" value="10.2" class="w-full">
+                    </div>
+
+                    <!-- Exposure (ACES Filmic) -->
+                    <div class="space-y-1.5 pt-2 border-t border-white/5">
+                        <div class="flex justify-between">
+                            <span class="text-stone-200 font-medium">ACES Filmic Tone Exposure</span>
+                            <span id="val-exposure" class="mono text-amber-400 font-bold">1.15</span>
+                        </div>
+                        <input id="set-exposure" type="range" min="0.5" max="2.0" step="0.05" value="1.15" class="w-full">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Toast Notification Box -->
+    <div id="toast-box" class="fixed bottom-16 right-4 z-40 pointer-events-none flex flex-col gap-2"></div>
+
+    <!-- Main 3D Prehistoric Engine Module -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+        import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+        import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+
+        /**
+         * ISLA PRIMORDIAL // Hyper-Realistic 3D Dinosaur Survival Engine
+         * - Playable Multi-Part Articulated 3D Theropod (Allosaurus/Carnotaurus style)
+         * - 'The Isle' Third-Person Orbital Camera + First-Person Snout Toggle
+         * - Living AI Triceratops & Brachiosaurus Herds
+         * - Custom GLSL Fresnel / Beer-Lambert Absorption / Caustics / Shoreline Foam Water
+         * - All 5 Reference Botanical Tree Archetypes + Prehistoric Ferns + Meadow Grass
+         */
+        class IslaPrimordialEngine {
+            constructor() {
+                this.container = document.getElementById('canvas-container');
+                this.isPlaying = false;
+                this.clock = new THREE.Clock();
+                this.elapsedTime = 0;
+
+                // Water level constant
+                this.waterLevel = -0.35;
+
+                // Graphics Config State (Defaulting to 'The Isle' Third-Person)
+                this.config = {
+                    cameraMode: 'tp',
+                    waterQuality: 'high',
+                    resolutionScale: 1.0,
+                    foliageDensity: 1.0,
+                    shadowMapSize: 2048,
+                    bloomStrength: 0.42,
+                    envMapIntensity: 1.2,
+                    fogDensity: 0.011,
+                    fov: 72,
+                    timeOfDay: 10.2,
+                    autoCycle: true,
+                    exposure: 1.15
+                };
+
+                // Playable Theropod State
+                this.dino = {
+                    position: new THREE.Vector3(-4, 2, 16),
+                    velocity: new THREE.Vector3(),
+                    camYaw: 0.15,
+                    camPitch: 0.18,
+                    bodyYaw: 0.15,
+                    hipHeight: 1.48,
+                    walkSpeed: 5.8,
+                    sprintSpeed: 12.6,
+                    crouchSpeed: 3.1,
+                    jumpForce: 8.6,
+                    isGrounded: false,
+                    isCrouching: false,
+                    stamina: 100,
+                    hunger: 88,
+                    thirst: 92,
+                    strideTimer: 0,
+                    roarTimer: 0,
+                    scentActive: false,
+                    tpCamPos: new THREE.Vector3(-4, 4, 22)
+                };
+
+                // Shader uniform hooks
+                this.windUniforms = [];
+                this.sunUniforms = [];
+                this.roarWaves = [];
+                this.npcHerds = [];
+                this.physicsChunks = [];
+
+                // Input State
+                this.keys = {};
+                this.frames = 0;
+                this.lastFpsUpdate = performance.now();
+
+                this.initRenderer();
+                this.initSceneAndEnvironment();
+                this.generateProceduralTextures();
+                this.buildTerrainAndWater();
+                this.buildPlayableTheropod();
+                this.spawnDinosaurHerds();
+                this.generateBotanicalTrees();
+                this.generatePrehistoricFloraAndRocks();
+                this.initPostProcessing();
+                this.initControls();
+                this.initUI();
+
+                this.animate = this.animate.bind(this);
+                requestAnimationFrame(this.animate);
+            }
+
+            /**
+             * 1. WebGLRenderer with ACES Filmic Tone Mapping & Soft Shadows
+             */
+            initRenderer() {
+                this.renderer = new THREE.WebGLRenderer({
+                    antialias: true,
+                    powerPreference: 'high-performance',
+                    stencil: false
+                });
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2) * this.config.resolutionScale);
+                this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+                this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                this.renderer.toneMappingExposure = this.config.exposure;
+                this.renderer.shadowMap.enabled = true;
+                this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+                this.container.appendChild(this.renderer.domElement);
+            }
+
+            /**
+             * 2. Scene, Camera, IBL Reflections, Atmospheric Fog & Sky Dome
+             */
+            initSceneAndEnvironment() {
+                this.scene = new THREE.Scene();
+                this.scene.fog = new THREE.FogExp2(0x88b4cc, this.config.fogDensity);
+
+                this.camera = new THREE.PerspectiveCamera(
+                    this.config.fov,
+                    window.innerWidth / window.innerHeight,
+                    0.15,
+                    500
+                );
+                this.scene.add(this.camera);
+
+                // PMREM Environment Map for realistic PBR reflections
+                const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
+                this.envTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+                this.scene.environment = this.envTexture;
+                this.scene.environmentIntensity = this.config.envMapIntensity;
+
+                // Hemisphere Sky/Ground Bounce Light
+                this.hemiLight = new THREE.HemisphereLight(0xdff2ff, 0x3b3526, 0.62);
+                this.scene.add(this.hemiLight);
+
+                // Directional Sunlight with High-Res Shadow Frustum
+                this.sunLight = new THREE.DirectionalLight(0xfff5e0, 3.3);
+                this.sunLight.position.set(45, 65, 35);
+                this.sunLight.castShadow = true;
+                this.sunLight.shadow.mapSize.width = this.config.shadowMapSize;
+                this.sunLight.shadow.mapSize.height = this.config.shadowMapSize;
+                this.sunLight.shadow.camera.near = 5;
+                this.sunLight.shadow.camera.far = 210;
+                const d = 62;
+                this.sunLight.shadow.camera.left = -d;
+                this.sunLight.shadow.camera.right = d;
+                this.sunLight.shadow.camera.top = d;
+                this.sunLight.shadow.camera.bottom = -d;
+                this.sunLight.shadow.bias = -0.0004;
+                this.sunLight.shadow.normalBias = 0.025;
+                this.scene.add(this.sunLight);
+                this.scene.add(this.sunLight.target);
+
+                // Procedural Sky Shader Dome
+                const skyGeo = new THREE.SphereGeometry(420, 32, 16);
+                const skyMat = new THREE.ShaderMaterial({
+                    side: THREE.BackSide,
+                    depthWrite: false,
+                    uniforms: {
+                        topColor: { value: new THREE.Color(0x1b4f8c) },
+                        bottomColor: { value: new THREE.Color(0xa6cde8) },
+                        sunDirection: { value: new THREE.Vector3(0.5, 0.7, 0.3).normalize() },
+                        sunColor: { value: new THREE.Color(0xfffae6) }
+                    },
+                    vertexShader: `
+                        varying vec3 vWorldPosition;
+                        void main() {
+                            vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+                            vWorldPosition = worldPosition.xyz;
+                            gl_Position = projectionMatrix * viewMatrix * worldPosition;
+                        }
+                    `,
+                    fragmentShader: `
+                        uniform vec3 topColor;
+                        uniform vec3 bottomColor;
+                        uniform vec3 sunDirection;
+                        uniform vec3 sunColor;
+                        varying vec3 vWorldPosition;
+                        void main() {
+                            vec3 dir = normalize(vWorldPosition);
+                            float h = clamp(dir.y, 0.0, 1.0);
+                            vec3 sky = mix(bottomColor, topColor, pow(h, 0.58));
+                            float sunDot = max(dot(dir, sunDirection), 0.0);
+                            float sunDisc = smoothstep(0.9985, 0.9996, sunDot);
+                            float sunHalo = pow(sunDot, 16.0) * 0.38;
+                            sky += sunColor * (sunDisc * 2.6 + sunHalo);
+                            gl_FragColor = vec4(sky, 1.0);
+                        }
+                    `
+                });
+                this.skyDome = new THREE.Mesh(skyGeo, skyMat);
+                this.scene.add(this.skyDome);
+
+                // Primal Night-Vision / Scent Pulse Ambient Boost Light
+                this.primalSenseLight = new THREE.PointLight(0x10b981, 0, 45);
+                this.scene.add(this.primalSenseLight);
+            }
+
+            /**
+             * Post-Processing Pipeline (UnrealBloomPass + OutputPass)
+             */
+            initPostProcessing() {
+                this.composer = new EffectComposer(this.renderer);
+                this.composer.addPass(new RenderPass(this.scene, this.camera));
+
+                this.bloomPass = new UnrealBloomPass(
+                    new THREE.Vector2(window.innerWidth, window.innerHeight),
+                    this.config.bloomStrength,
+                    0.42,
+                    0.85
+                );
+                this.composer.addPass(this.bloomPass);
+                this.composer.addPass(new OutputPass());
+            }
+
+            /**
+             * 3. Procedural PBR Reptilian Scale, Bark, Terrain & Botanical Textures
+             */
+            generateProceduralTextures() {
+                // Reptilian Osteoderm & Scale Texture Generator
+                const createScaleTexture = (size, primaryHex, stripeHex, bellyHex, bumpOnly = false) => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = size;
+                    canvas.height = size;
+                    const ctx = canvas.getContext('2d');
+
+                    if (bumpOnly) {
+                        ctx.fillStyle = '#303030';
+                    } else {
+                        const grad = ctx.createLinearGradient(0, 0, 0, size);
+                        grad.addColorStop(0, stripeHex);
+                        grad.addColorStop(0.45, primaryHex);
+                        grad.addColorStop(1, bellyHex);
+                        ctx.fillStyle = grad;
+                    }
+                    ctx.fillRect(0, 0, size, size);
+
+                    // Draw hexagonal/organic reptilian scales
+                    const step = 12;
+                    for (let y = 0; y < size; y += step) {
+                        const rowOffset = ((y / step) % 2) * (step * 0.5);
+                        for (let x = 0; x < size; x += step) {
+                            const cx = x + rowOffset + (Math.random() - 0.5) * 2;
+                            const cy = y + (Math.random() - 0.5) * 2;
+                            const rad = step * (0.38 + Math.random() * 0.14);
+
+                            ctx.beginPath();
+                            ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+                            if (bumpOnly) {
+                                const b = Math.floor(145 + Math.random() * 105);
+                                ctx.fillStyle = `rgb(${b},${b},${b})`;
+                                ctx.fill();
+                                ctx.strokeStyle = '#151515';
+                                ctx.lineWidth = 1.2;
+                                ctx.stroke();
+                            } else {
+                                ctx.fillStyle = Math.random() > 0.5
+                                    ? 'rgba(255,255,255,0.06)'
+                                    : 'rgba(0,0,0,0.14)';
+                                ctx.fill();
+                                ctx.strokeStyle = 'rgba(0,0,0,0.22)';
+                                ctx.lineWidth = 0.8;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+
+                    // Tiger / Camo striping for color maps
+                    if (!bumpOnly) {
+                        ctx.fillStyle = stripeHex;
+                        ctx.globalAlpha = 0.34;
+                        for (let s = 0; s < 14; s++) {
+                            const sx = (s / 14) * size;
+                            ctx.beginPath();
+                            ctx.moveTo(sx, 0);
+                            ctx.lineTo(sx + 18, 0);
+                            ctx.lineTo(sx + 6, size * 0.52);
+                            ctx.closePath();
+                            ctx.fill();
+                        }
+                        ctx.globalAlpha = 1.0;
+                    }
+
+                    const tex = new THREE.CanvasTexture(canvas);
+                    tex.wrapS = THREE.RepeatWrapping;
+                    tex.wrapT = THREE.RepeatWrapping;
+                    tex.repeat.set(3, 3);
+                    if (!bumpOnly) tex.colorSpace = THREE.SRGBColorSpace;
+                    return tex;
+                };
+
+                // Theropod Apex Predator Scales (Olive-Charcoal with Rust Tiger Stripes & Ochre Underbelly)
+                this.texTheropodAlbedo = createScaleTexture(512, '#3b4232', '#1c1f19', '#8a7a5c', false);
+                this.texTheropodBump = createScaleTexture(512, '#888888', '#ffffff', '#666666', true);
+
+                // Triceratops Leathery Hide (Slate-Bronze with Ochre Frill)
+                this.texTrikeAlbedo = createScaleTexture(256, '#574a3e', '#362d26', '#7a6b5c', false);
+
+                // Brachiosaurus Sauropod Hide (Warm Taupe-Olive)
+                this.texBrachiAlbedo = createScaleTexture(256, '#5b6154', '#3f4539', '#878c7d', false);
+
+                // Terrain Detail Texture
+                this.texTerrainDetail = this.createNoiseTexture(512, '#4c5c34', '#6b5e45', false);
+                this.texTerrainDetail.repeat.set(42, 42);
+                this.texTerrainBump = this.createNoiseTexture(512, '#444444', '#ffffff', true);
+                this.texTerrainBump.repeat.set(42, 42);
+
+                // Dual Botanical Bark Textures (Matching Reference Trees)
+                this.texDarkBarkAlbedo = this.createDarkGnarledBarkTexture();
+                this.texPaleBarkAlbedo = this.createPaleSmoothBarkTexture();
+                this.texBarkBump = this.createNoiseTexture(256, '#555555', '#eeeeee', true);
+                this.texBarkBump.repeat.set(2, 6);
+
+                // High-Detail Alpha-Tested Botanical Pinnate Leaf Frond, Fern & Grass Textures
+                this.texLeafCluster = this.createBotanicalTwigTexture();
+                this.texFernFrond = this.createFernFrondTexture();
+                this.texGrassBlade = this.createGrassBladeTexture();
+            }
+
+            createNoiseTexture(size, baseHex, detailHex, roughnessMode = false) {
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = baseHex;
+                ctx.fillRect(0, 0, size, size);
+
+                const imgData = ctx.getImageData(0, 0, size, size);
+                const data = imgData.data;
+                const c1 = new THREE.Color(baseHex);
+                const c2 = new THREE.Color(detailHex);
+
+                for (let i = 0; i < data.length; i += 4) {
+                    const px = (i / 4) % size;
+                    const py = Math.floor((i / 4) / size);
+                    const n1 = Math.sin(px * 0.08) * Math.cos(py * 0.08);
+                    const n2 = Math.sin(px * 0.35 + py * 0.25) * 0.5;
+                    const grain = (Math.random() - 0.5) * 0.35;
+                    const blend = THREE.MathUtils.clamp((n1 + n2) * 0.35 + 0.5 + grain, 0, 1);
+
+                    if (roughnessMode) {
+                        const val = Math.floor(blend * 255);
+                        data[i] = val;
+                        data[i + 1] = val;
+                        data[i + 2] = val;
+                    } else {
+                        data[i] = Math.floor(THREE.MathUtils.lerp(c1.r, c2.r, blend) * 255);
+                        data[i + 1] = Math.floor(THREE.MathUtils.lerp(c1.g, c2.g, blend) * 255);
+                        data[i + 2] = Math.floor(THREE.MathUtils.lerp(c1.b, c2.b, blend) * 255);
+                    }
+                    data[i + 3] = 255;
+                }
+                ctx.putImageData(imgData, 0, 0);
+
+                const tex = new THREE.CanvasTexture(canvas);
+                tex.wrapS = THREE.RepeatWrapping;
+                tex.wrapT = THREE.RepeatWrapping;
+                if (!roughnessMode) tex.colorSpace = THREE.SRGBColorSpace;
+                return tex;
+            }
+
+            createGrassBladeTexture() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 128;
+                canvas.height = 256;
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 128, 256);
+
+                const drawBlade = (baseX, tipX, height, width) => {
+                    const grad = ctx.createLinearGradient(0, 256, 0, 256 - height);
+                    grad.addColorStop(0, '#2a421a');
+                    grad.addColorStop(0.55, '#4d7328');
+                    grad.addColorStop(1, '#8cb846');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.moveTo(baseX - width * 0.5, 256);
+                    ctx.quadraticCurveTo(baseX - width * 0.25, 256 - height * 0.55, tipX, 256 - height);
+                    ctx.quadraticCurveTo(baseX + width * 0.25, 256 - height * 0.55, baseX + width * 0.5, 256);
+                    ctx.closePath();
+                    ctx.fill();
+                };
+
+                drawBlade(26, 12, 215, 14);
+                drawBlade(52, 46, 245, 16);
+                drawBlade(78, 86, 232, 15);
+                drawBlade(104, 118, 200, 13);
+
+                const tex = new THREE.CanvasTexture(canvas);
+                tex.colorSpace = THREE.SRGBColorSpace;
+                return tex;
+            }
+
+            createFernFrondTexture() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 256;
+                canvas.height = 256;
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 256, 256);
+
+                // Central stem
+                ctx.strokeStyle = '#3b5922';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(128, 252);
+                ctx.quadraticCurveTo(124, 130, 128, 12);
+                ctx.stroke();
+
+                // Pinnae leaflets along stem
+                const pairs = 16;
+                for (let i = 0; i < pairs; i++) {
+                    const t = i / pairs;
+                    const y = 240 - t * 218;
+                    const span = Math.sin(t * Math.PI * 0.92 + 0.15) * 95;
+                    for (const side of [-1, 1]) {
+                        const grad = ctx.createLinearGradient(128, y, 128 + side * span, y - 12);
+                        grad.addColorStop(0, '#2e4d19');
+                        grad.addColorStop(0.6, '#4d7c28');
+                        grad.addColorStop(1, '#79ad3b');
+                        ctx.fillStyle = grad;
+                        ctx.beginPath();
+                        ctx.moveTo(128, y);
+                        ctx.quadraticCurveTo(128 + side * span * 0.5, y - 14, 128 + side * span, y - 8);
+                        ctx.quadraticCurveTo(128 + side * span * 0.5, y + 3, 128, y + 5);
+                        ctx.closePath();
+                        ctx.fill();
+                    }
+                }
+
+                const tex = new THREE.CanvasTexture(canvas);
+                tex.colorSpace = THREE.SRGBColorSpace;
+                return tex;
+            }
+
+            createDarkGnarledBarkTexture() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 256;
+                canvas.height = 512;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#332b24';
+                ctx.fillRect(0, 0, 256, 512);
+
+                for (let i = 0; i < 1300; i++) {
+                    const x = Math.random() * 256;
+                    const y = Math.random() * 512;
+                    const w = 1.2 + Math.random() * 4.2;
+                    const h = 22 + Math.random() * 80;
+                    const shade = Math.random();
+                    if (shade < 0.48) {
+                        ctx.fillStyle = 'rgba(16, 13, 10, 0.62)';
+                    } else if (shade < 0.82) {
+                        ctx.fillStyle = 'rgba(78, 69, 59, 0.44)';
+                    } else {
+                        ctx.fillStyle = 'rgba(65, 82, 48, 0.30)';
+                    }
+                    ctx.fillRect(x, y, w, h);
+                }
+
+                const tex = new THREE.CanvasTexture(canvas);
+                tex.wrapS = THREE.RepeatWrapping;
+                tex.wrapT = THREE.RepeatWrapping;
+                tex.repeat.set(2, 5);
+                tex.colorSpace = THREE.SRGBColorSpace;
+                return tex;
+            }
+
+            createPaleSmoothBarkTexture() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 256;
+                canvas.height = 512;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#c5bdb2';
+                ctx.fillRect(0, 0, 256, 512);
+
+                for (let i = 0; i < 720; i++) {
+                    const x = Math.random() * 256;
+                    const y = Math.random() * 512;
+                    const w = 1 + Math.random() * 3.2;
+                    const h = 25 + Math.random() * 85;
+                    ctx.fillStyle = Math.random() > 0.45
+                        ? 'rgba(232, 227, 219, 0.38)'
+                        : 'rgba(138, 130, 120, 0.25)';
+                    ctx.fillRect(x, y, w, h);
+                }
+
+                for (let i = 0; i < 480; i++) {
+                    const x = Math.random() * 256;
+                    const y = Math.random() * 512;
+                    const w = 5 + Math.random() * 15;
+                    const h = 1.1 + Math.random() * 2.1;
+                    ctx.fillStyle = Math.random() > 0.38
+                        ? 'rgba(86, 78, 70, 0.40)'
+                        : 'rgba(240, 238, 232, 0.42)';
+                    ctx.fillRect(x, y, w, h);
+                }
+
+                const tex = new THREE.CanvasTexture(canvas);
+                tex.wrapS = THREE.RepeatWrapping;
+                tex.wrapT = THREE.RepeatWrapping;
+                tex.repeat.set(2, 5);
+                tex.colorSpace = THREE.SRGBColorSpace;
+                return tex;
+            }
+
+            createBotanicalTwigTexture() {
+                const size = 512;
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, size, size);
+
+                const drawSerratedLeaflet = (lx, ly, angle, length, width, toneType) => {
+                    ctx.save();
+                    ctx.translate(lx, ly);
+                    ctx.rotate(angle);
+
+                    const grad = ctx.createLinearGradient(0, 0, length, 0);
+                    if (toneType === 'sunlit') {
+                        grad.addColorStop(0, '#5a822d');
+                        grad.addColorStop(0.55, '#83b03b');
+                        grad.addColorStop(1, '#b4d654');
+                    } else if (toneType === 'mid') {
+                        grad.addColorStop(0, '#3c5e20');
+                        grad.addColorStop(0.6, '#5c8c2e');
+                        grad.addColorStop(1, '#84b342');
+                    } else {
+                        grad.addColorStop(0, '#1f3312');
+                        grad.addColorStop(0.6, '#33521d');
+                        grad.addColorStop(1, '#4c7529');
+                    }
+
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    const teeth = 4;
+                    for (let t = 1; t <= teeth; t++) {
+                        const frac = t / (teeth + 1);
+                        const px = length * frac;
+                        const py = -Math.sin(frac * Math.PI) * width;
+                        ctx.lineTo(px - length * 0.04, py * 1.12);
+                        ctx.lineTo(px, py * 0.85);
+                    }
+                    ctx.lineTo(length, 0);
+                    for (let t = teeth; t >= 1; t--) {
+                        const frac = t / (teeth + 1);
+                        const px = length * frac;
+                        const py = Math.sin(frac * Math.PI) * width;
+                        ctx.lineTo(px, py * 0.85);
+                        ctx.lineTo(px - length * 0.04, py * 1.12);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.strokeStyle = toneType === 'shaded'
+                        ? 'rgba(95, 130, 55, 0.32)'
+                        : 'rgba(210, 235, 130, 0.42)';
+                    ctx.lineWidth = 0.7;
+                    ctx.beginPath();
+                    ctx.moveTo(0.5, 0);
+                    ctx.lineTo(length * 0.88, 0);
+                    ctx.stroke();
+
+                    ctx.restore();
+                };
+
+                const drawCompoundFrond = (startX, startY, angle, length, depth, layerShade) => {
+                    const endX = startX + Math.cos(angle) * length;
+                    const endY = startY + Math.sin(angle) * length;
+
+                    ctx.strokeStyle = layerShade === 'shaded' ? '#2c271d' : '#4a4332';
+                    ctx.lineWidth = Math.max(1.0, depth * 1.35);
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(endX, endY);
+                    ctx.stroke();
+
+                    const leafletPairs = depth === 1 ? 12 : 8;
+                    for (let i = 1; i <= leafletPairs; i++) {
+                        const t = i / (leafletPairs + 0.35);
+                        const lx = THREE.MathUtils.lerp(startX, endX, t);
+                        const ly = THREE.MathUtils.lerp(startY, endY, t);
+
+                        if (i === leafletPairs) {
+                            drawSerratedLeaflet(endX, endY, angle + (Math.random() - 0.5) * 0.15, 16, 5.2, layerShade);
+                        }
+
+                        for (const side of [-1, 1]) {
+                            const leafAngle = angle + side * (0.64 + (Math.random() - 0.5) * 0.18);
+                            const leafLen = (15 + Math.random() * 12) * (1 - t * 0.30);
+                            const leafWid = leafLen * 0.34;
+                            const tone = (t > 0.65 && layerShade !== 'shaded') ? 'sunlit' : layerShade;
+                            drawSerratedLeaflet(lx, ly, leafAngle, leafLen, leafWid, tone);
+                        }
+                    }
+
+                    if (depth > 1) {
+                        const subBranches = 3;
+                        for (let s = 0; s < subBranches; s++) {
+                            const frac = 0.30 + (s / subBranches) * 0.58;
+                            const sx = THREE.MathUtils.lerp(startX, endX, frac);
+                            const sy = THREE.MathUtils.lerp(startY, endY, frac);
+                            const spread = (s % 2 === 0 ? 1 : -1) * (0.46 + Math.random() * 0.24);
+                            drawCompoundFrond(sx, sy, angle + spread, length * 0.66, depth - 1, layerShade);
+                        }
+                    }
+                };
+
+                const cx = size * 0.5;
+                const cy = size * 0.52;
+                for (let i = 0; i < 7; i++) {
+                    const a = (i / 7) * Math.PI * 2 + 0.2;
+                    drawCompoundFrond(cx, cy, a, size * 0.36, 2, 'shaded');
+                }
+                for (let i = 0; i < 8; i++) {
+                    const a = (i / 8) * Math.PI * 2 + 0.55;
+                    drawCompoundFrond(cx, cy, a, size * 0.42, 2, 'mid');
+                }
+                for (let i = 0; i < 6; i++) {
+                    const a = (i / 6) * Math.PI * 2 + 0.12;
+                    drawCompoundFrond(cx, cy, a, size * 0.34, 2, 'sunlit');
+                }
+
+                const tex = new THREE.CanvasTexture(canvas);
+                tex.colorSpace = THREE.SRGBColorSpace;
+                return tex;
+            }
+
+            /**
+             * 4. Carved River/Lake Valley Heightmap & Custom GLSL Prehistoric Water Shader
+             */
+            getTerrainHeight(x, z) {
+                // Rolling Cretaceous valley hills
+                let h = Math.sin(x * 0.028) * Math.cos(z * 0.028) * 4.2
+                      + Math.sin(x * 0.011 + z * 0.013) * 9.5;
+
+                // Flatten central meadow slightly
+                const centerDist = Math.hypot(x + 4, z - 12);
+                if (centerDist < 22) {
+                    h *= Math.pow(centerDist / 22, 1.5);
+                }
+
+                // Meandering river channel + lake basin near (x = 12, z = -12)
+                const riverCenterX = Math.sin(z * 0.032) * 20 + 10;
+                const distToRiver = Math.abs(x - riverCenterX);
+                const lakeDist = Math.hypot(x - 14, z + 14);
+
+                const riverCarve = Math.exp(-Math.pow(distToRiver / 13.5, 2)) * 5.6;
+                const lakeCarve = Math.exp(-Math.pow(lakeDist / 22.0, 2)) * 6.4;
+                const basinCarve = Math.max(riverCarve, lakeCarve);
+
+                h = h - basinCarve + 0.65;
+                return h;
+            }
+
+            buildTerrainAndWater() {
+                // High-resolution terrain mesh with biome vertex coloring (sand/pebbles near water, lush grass, highland moss)
+                const size = 320;
+                const segs = 140;
+                const terrainGeo = new THREE.PlaneGeometry(size, size, segs, segs);
+                terrainGeo.rotateX(-Math.PI / 2);
+
+                const pos = terrainGeo.attributes.position;
+                const colors = new Float32Array(pos.count * 3);
+
+                const colDeepBed = new THREE.Color(0x1b2b26);
+                const colShoreSand = new THREE.Color(0x9c8b68);
+                const colMeadow = new THREE.Color(0x3a5424);
+                const colHighland = new THREE.Color(0x525e34);
+
+                for (let i = 0; i < pos.count; i++) {
+                    const x = pos.getX(i);
+                    const z = pos.getZ(i);
+                    const h = this.getTerrainHeight(x, z);
+                    pos.setY(i, h);
+
+                    const c = new THREE.Color();
+                    if (h < this.waterLevel - 0.8) {
+                        c.copy(colDeepBed);
+                    } else if (h < this.waterLevel + 0.65) {
+                        const t = THREE.MathUtils.clamp((h - (this.waterLevel - 0.8)) / 1.45, 0, 1);
+                        c.copy(colDeepBed).lerp(colShoreSand, t);
+                    } else if (h < 3.2) {
+                        const t = THREE.MathUtils.clamp((h - (this.waterLevel + 0.65)) / 2.55, 0, 1);
+                        c.copy(colShoreSand).lerp(colMeadow, t);
+                    } else {
+                        const t = THREE.MathUtils.clamp((h - 3.2) / 6.0, 0, 1);
+                        c.copy(colMeadow).lerp(colHighland, t);
+                    }
+                    colors[i * 3] = c.r;
+                    colors[i * 3 + 1] = c.g;
+                    colors[i * 3 + 2] = c.b;
+                }
+
+                terrainGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                terrainGeo.computeVertexNormals();
+
+                const terrainMat = new THREE.MeshStandardMaterial({
+                    map: this.texTerrainDetail,
+                    bumpMap: this.texTerrainBump,
+                    bumpScale: 0.14,
+                    vertexColors: true,
+                    roughness: 0.90,
+                    metalness: 0.04
+                });
+
+                const terrain = new THREE.Mesh(terrainGeo, terrainMat);
+                terrain.receiveShadow = true;
+                this.scene.add(terrain);
+                this.terrainMesh = terrain;
+
+                // Custom GLSL Prehistoric Water Plane with Exact Depth Attribute for Shoreline Foam & Beer-Lambert Absorption
+                const waterGeo = new THREE.PlaneGeometry(size, size, 160, 160);
+                waterGeo.rotateX(-Math.PI / 2);
+                const wPos = waterGeo.attributes.position;
+                const waterDepths = new Float32Array(wPos.count);
+
+                for (let i = 0; i < wPos.count; i++) {
+                    const wx = wPos.getX(i);
+                    const wz = wPos.getZ(i);
+                    const bedY = this.getTerrainHeight(wx, wz);
+                    waterDepths[i] = Math.max(0.0, this.waterLevel - bedY);
+                }
+                waterGeo.setAttribute('aDepth', new THREE.BufferAttribute(waterDepths, 1));
+
+                this.waterUniforms = {
+                    uTime: { value: 0 },
+                    uSunDir: { value: new THREE.Vector3(0.5, 0.8, 0.3).normalize() },
+                    uSunColor: { value: new THREE.Color(0xfff5e0) },
+                    uSkyColor: { value: new THREE.Color(0x96c4e6) },
+                    uFogColor: { value: new THREE.Color(0x88b4cc) },
+                    uFogDensity: { value: this.config.fogDensity },
+                    uQuality: { value: 1.0 } // 1.0 = High, 0.0 = Low
+                };
+
+                const waterMat = new THREE.ShaderMaterial({
+                    transparent: true,
+                    depthWrite: false,
+                    uniforms: this.waterUniforms,
+                    vertexShader: `
+                        attribute float aDepth;
+                        uniform float uTime;
+                        uniform float uQuality;
+                        varying float vDepth;
+                        varying vec3 vWorldPos;
+                        varying float vFogDepth;
+
+                        void main() {
+                            vDepth = aDepth;
+                            vec3 pos = position;
+                            float shoreDamp = clamp(aDepth * 1.4, 0.0, 1.0);
+                            if (uQuality > 0.5 && aDepth > 0.01) {
+                                float w1 = sin(pos.x * 0.45 + uTime * 1.9) * cos(pos.z * 0.42 + uTime * 1.5);
+                                float w2 = sin((pos.x * 0.85 - pos.z * 0.65) + uTime * 2.6);
+                                pos.y += (w1 * 0.045 + w2 * 0.022) * shoreDamp;
+                            }
+                            vec4 worldPosition = modelMatrix * vec4(pos, 1.0);
+                            vWorldPos = worldPosition.xyz;
+                            vec4 mvPosition = viewMatrix * worldPosition;
+                            vFogDepth = -mvPosition.z;
+                            gl_Position = projectionMatrix * mvPosition;
+                        }
+                    `,
+                    fragmentShader: `
+                        uniform float uTime;
+                        uniform vec3 uSunDir;
+                        uniform vec3 uSunColor;
+                        uniform vec3 uSkyColor;
+                        uniform vec3 uFogColor;
+                        uniform float uFogDensity;
+                        uniform float uQuality;
+
+                        varying float vDepth;
+                        varying vec3 vWorldPos;
+                        varying float vFogDepth;
+
+                        // Multi-directional analytical wave height & gradient
+                        vec3 getWaveNormal(vec2 p, float t) {
+                            float eps = 0.08;
+                            float h0 = sin(p.x * 1.4 + t * 2.1) * cos(p.y * 1.3 - t * 1.7) * 0.035
+                                     + sin(p.x * 3.1 - p.y * 2.7 + t * 3.2) * 0.018
+                                     + cos(p.x * 5.8 + p.y * 5.2 - t * 4.1) * 0.008;
+                            float hx = sin((p.x + eps) * 1.4 + t * 2.1) * cos(p.y * 1.3 - t * 1.7) * 0.035
+                                     + sin((p.x + eps) * 3.1 - p.y * 2.7 + t * 3.2) * 0.018
+                                     + cos((p.x + eps) * 5.8 + p.y * 5.2 - t * 4.1) * 0.008;
+                            float hz = sin(p.x * 1.4 + t * 2.1) * cos((p.y + eps) * 1.3 - t * 1.7) * 0.035
+                                     + sin(p.x * 3.1 - (p.y + eps) * 2.7 + t * 3.2) * 0.018
+                                     + cos(p.x * 5.8 + (p.y + eps) * 5.2 - t * 4.1) * 0.008;
+                            return normalize(vec3(h0 - hx, eps, h0 - hz));
+                        }
+
+                        void main() {
+                            if (vDepth <= 0.005) discard;
+
+                            vec3 viewVec = normalize(cameraPosition - vWorldPos);
+                            vec3 normal = uQuality > 0.5
+                                ? getWaveNormal(vWorldPos.xz, uTime)
+                                : vec3(0.0, 1.0, 0.0);
+
+                            // Schlick Fresnel approximation
+                            float cosTheta = clamp(dot(viewVec, normal), 0.0, 1.0);
+                            float fresnel = 0.03 + 0.97 * pow(1.0 - cosTheta, 4.2);
+
+                            // Beer-Lambert depth absorption (crystal turquoise shallows -> deep emerald-teal)
+                            vec3 shallowColor = vec3(0.14, 0.48, 0.46);
+                            vec3 deepColor = vec3(0.02, 0.12, 0.16);
+                            float depthFactor = 1.0 - exp(-vDepth * 0.68);
+                            vec3 waterBody = mix(shallowColor, deepColor, depthFactor);
+
+                            // Animated underwater caustic shimmer in shallow water
+                            if (uQuality > 0.5 && vDepth < 2.6) {
+                                float c1 = sin(vWorldPos.x * 2.6 + uTime * 2.2) * cos(vWorldPos.z * 2.6 - uTime * 1.8);
+                                float c2 = sin((vWorldPos.x - vWorldPos.z) * 3.8 + uTime * 2.9);
+                                float caustics = pow(clamp((c1 + c2) * 0.5 + 0.5, 0.0, 1.0), 4.0);
+                                float shallowMask = 1.0 - clamp(vDepth / 2.6, 0.0, 1.0);
+                                waterBody += vec3(0.18, 0.34, 0.30) * caustics * shallowMask * 0.65;
+                            }
+
+                            // Sky reflection & crisp sun specular glints
+                            vec3 reflColor = mix(uSkyColor * 0.72, uSkyColor, 0.5);
+                            vec3 color = mix(waterBody, reflColor, fresnel * 0.85);
+
+                            vec3 halfVec = normalize(normalize(uSunDir) + viewVec);
+                            float specPower = uQuality > 0.5 ? 240.0 : 60.0;
+                            float spec = pow(max(dot(normal, halfVec), 0.0), specPower);
+                            color += uSunColor * spec * (uQuality > 0.5 ? 2.4 : 0.8);
+
+                            // Animated white shoreline foam where water meets land
+                            float alpha = clamp(vDepth * 2.8, 0.25, 0.94);
+                            if (uQuality > 0.5 && vDepth < 0.42) {
+                                float foamWave = sin(vDepth * 26.0 - uTime * 3.2 + sin(vWorldPos.x * 1.7 + vWorldPos.z * 1.5) * 2.0);
+                                float foamMask = smoothstep(0.42, 0.04, vDepth) * smoothstep(0.15, 0.85, foamWave);
+                                float edgeLine = smoothstep(0.10, 0.0, vDepth);
+                                float foam = clamp(foamMask * 0.75 + edgeLine * 0.85, 0.0, 1.0);
+                                color = mix(color, vec3(0.92, 0.96, 0.98), foam);
+                                alpha = max(alpha, foam * 0.9);
+                            }
+
+                            // Exponential distance fog integration
+                            float fogFactor = 1.0 - exp(-uFogDensity * uFogDensity * vFogDepth * vFogDepth);
+                            color = mix(color, uFogColor, clamp(fogFactor, 0.0, 1.0));
+
+                            gl_FragColor = vec4(color, alpha);
+                        }
+                    `
+                });
+
+                this.waterMesh = new THREE.Mesh(waterGeo, waterMat);
+                this.waterMesh.position.y = this.waterLevel;
+                this.scene.add(this.waterMesh);
+            }
+
+            /**
+             * 5. Playable Multi-Part Articulated 3D Theropod Dinosaur (Allosaurus / Carnotaurus Style)
+             */
+            buildPlayableTheropod() {
+                const dinoRoot = new THREE.Group();
+                this.scene.add(dinoRoot);
+                this.dinoRoot = dinoRoot;
+
+                const skinMat = new THREE.MeshStandardMaterial({
+                    map: this.texTheropodAlbedo,
+                    bumpMap: this.texTheropodBump,
+                    bumpScale: 0.045,
+                    roughness: 0.62,
+                    metalness: 0.08
+                });
+
+                const spineMat = new THREE.MeshStandardMaterial({
+                    color: 0x22201c,
+                    roughness: 0.5,
+                    metalness: 0.15
+                });
+
+                const clawHornMat = new THREE.MeshStandardMaterial({
+                    color: 0x161513,
+                    roughness: 0.35,
+                    metalness: 0.2
+                });
+
+                const toothMat = new THREE.MeshStandardMaterial({
+                    color: 0xf4efe2,
+                    roughness: 0.25,
+                    metalness: 0.05
+                });
+
+                const mouthInsideMat = new THREE.MeshStandardMaterial({
+                    color: 0x6e1e26,
+                    roughness: 0.45
+                });
+
+                const eyeMat = new THREE.MeshStandardMaterial({
+                    color: 0xffb703,
+                    emissive: 0xf59e0b,
+                    emissiveIntensity: 0.75,
+                    roughness: 0.1
+                });
+
+                // Helper to create tapered organic spline limb/body segments
+                const createOrganicSegment = (points, radii, radialSegs = 12, mat = skinMat) => {
+                    const curve = new THREE.CatmullRomCurve3(points);
+                    const tubularSegs = 16;
+                    const geo = new THREE.TubeGeometry(curve, tubularSegs, 1, radialSegs, false);
+                    const pos = geo.attributes.position;
+                    const v = new THREE.Vector3();
+                    const center = new THREE.Vector3();
+
+                    for (let i = 0; i <= tubularSegs; i++) {
+                        const t = i / tubularSegs;
+                        curve.getPointAt(t, center);
+                        // Interpolate radius across radii array
+                        const scaledT = t * (radii.length - 1);
+                        const idx0 = Math.floor(scaledT);
+                        const idx1 = Math.min(radii.length - 1, idx0 + 1);
+                        const frac = scaledT - idx0;
+                        const r = THREE.MathUtils.lerp(radii[idx0], radii[idx1], frac);
+
+                        for (let j = 0; j <= radialSegs; j++) {
+                            const idx = i * (radialSegs + 1) + j;
+                            v.fromBufferAttribute(pos, idx).sub(center);
+                            // Slightly laterally compress torso/neck for muscular theropod anatomy
+                            v.x *= r * 0.84;
+                            v.y *= r * 1.08;
+                            v.z *= r;
+                            v.add(center);
+                            pos.setXYZ(idx, v.x, v.y, v.z);
+                        }
+                    }
+                    geo.computeVertexNormals();
+                    const mesh = new THREE.Mesh(geo, mat);
+                    mesh.castShadow = true;
+                    mesh.receiveShadow = true;
+                    return mesh;
+                };
+
+                // Pelvis & Torso Pivot
+                const pelvis = new THREE.Group();
+                pelvis.position.y = this.dino.hipHeight;
+                dinoRoot.add(pelvis);
+
+                const torso = new THREE.Group();
+                pelvis.add(torso);
+
+                // Sculpted Muscular Ribcage & Hip Torso (facing -Z forward)
+                const torsoMesh = createOrganicSegment(
+                    [
+                        new THREE.Vector3(0, 0.05, 0.65),
+                        new THREE.Vector3(0, 0.14, 0.0),
+                        new THREE.Vector3(0, 0.10, -0.75),
+                        new THREE.Vector3(0, 0.18, -1.35)
+                    ],
+                    [0.36, 0.54, 0.48, 0.30],
+                    14
+                );
+                torso.add(torsoMesh);
+
+                // Dorsal Osteoderm Spines along back
+                for (let s = 0; s < 8; s++) {
+                    const spine = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.18, 5), spineMat);
+                    spine.position.set(0, 0.62 - s * 0.015, 0.55 - s * 0.25);
+                    spine.rotation.x = -0.35;
+                    spine.castShadow = true;
+                    torso.add(spine);
+                }
+
+                // S-Curved Muscular Neck
+                const neck = new THREE.Group();
+                neck.position.set(0, 0.20, -1.28);
+                torso.add(neck);
+
+                const neckMesh = createOrganicSegment(
+                    [
+                        new THREE.Vector3(0, 0, 0),
+                        new THREE.Vector3(0, 0.34, -0.36),
+                        new THREE.Vector3(0, 0.64, -0.68)
+                    ],
+                    [0.29, 0.23, 0.19],
+                    12
+                );
+                neck.add(neckMesh);
+
+                // Neck dorsal spines
+                for (let s = 0; s < 4; s++) {
+                    const nSpine = new THREE.Mesh(new THREE.ConeGeometry(0.035, 0.14, 5), spineMat);
+                    nSpine.position.set(0, 0.24 + s * 0.14, -0.12 - s * 0.16);
+                    nSpine.rotation.x = -0.45;
+                    neck.add(nSpine);
+                }
+
+                // Articulated Skull Group (Upper Maxilla + Hinged Lower Mandible)
+                const head = new THREE.Group();
+                head.position.set(0, 0.66, -0.66);
+                neck.add(head);
+
+                // Cranium & Upper Maxilla Snout
+                const cranium = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.28, 0.42), skinMat);
+                cranium.position.set(0, 0.04, -0.14);
+                cranium.castShadow = true;
+                head.add(cranium);
+
+                const upperSnout = createOrganicSegment(
+                    [
+                        new THREE.Vector3(0, 0.04, -0.25),
+                        new THREE.Vector3(0, 0.02, -0.58),
+                        new THREE.Vector3(0, -0.01, -0.86)
+                    ],
+                    [0.19, 0.14, 0.09],
+                    10
+                );
+                head.add(upperSnout);
+
+                // Brow Horns (Allosaurus / Carnotaurus lacrimal crests)
+                for (const side of [-1, 1]) {
+                    const horn = new THREE.Mesh(new THREE.ConeGeometry(0.055, 0.22, 6), clawHornMat);
+                    horn.position.set(side * 0.14, 0.21, -0.24);
+                    horn.rotation.set(0.35, 0, -side * 0.38);
+                    horn.castShadow = true;
+                    head.add(horn);
+
+                    // Glowing Amber Reptilian Eyes
+                    const eye = new THREE.Mesh(new THREE.SphereGeometry(0.038, 10, 10), eyeMat);
+                    eye.position.set(side * 0.165, 0.09, -0.25);
+                    head.add(eye);
+                }
+
+                // Upper Conical Teeth Row
+                for (let t = 0; t < 7; t++) {
+                    for (const side of [-1, 1]) {
+                        const tooth = new THREE.Mesh(new THREE.ConeGeometry(0.014, 0.065, 5), toothMat);
+                        tooth.position.set(side * (0.11 - t * 0.008), -0.08, -0.34 - t * 0.075);
+                        tooth.rotation.x = Math.PI;
+                        head.add(tooth);
+                    }
+                }
+
+                // Hinged Lower Mandible Jaw
+                const lowerJaw = new THREE.Group();
+                lowerJaw.position.set(0, -0.06, -0.18);
+                head.add(lowerJaw);
+
+                const jawMesh = createOrganicSegment(
+                    [
+                        new THREE.Vector3(0, 0, 0),
+                        new THREE.Vector3(0, -0.02, -0.35),
+                        new THREE.Vector3(0, -0.01, -0.64)
+                    ],
+                    [0.14, 0.10, 0.065],
+                    10
+                );
+                lowerJaw.add(jawMesh);
+
+                const tongue = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.03, 0.42), mouthInsideMat);
+                tongue.position.set(0, 0.03, -0.32);
+                lowerJaw.add(tongue);
+
+                // Lower Conical Teeth Row
+                for (let t = 0; t < 6; t++) {
+                    for (const side of [-1, 1]) {
+                        const tooth = new THREE.Mesh(new THREE.ConeGeometry(0.012, 0.055, 5), toothMat);
+                        tooth.position.set(side * (0.09 - t * 0.007), 0.055, -0.16 - t * 0.075);
+                        lowerJaw.add(tooth);
+                    }
+                }
+
+                // Small Two-Fingered Theropod Forelimbs
+                const buildForelimb = (side) => {
+                    const shoulder = new THREE.Group();
+                    shoulder.position.set(side * 0.26, -0.12, -1.05);
+                    torso.add(shoulder);
+
+                    const upperArm = createOrganicSegment(
+                        [new THREE.Vector3(0, 0, 0), new THREE.Vector3(side * 0.05, -0.24, 0.08)],
+                        [0.08, 0.06],
+                        8
+                    );
+                    shoulder.add(upperArm);
+
+                    const forearm = createOrganicSegment(
+                        [new THREE.Vector3(side * 0.05, -0.24, 0.08), new THREE.Vector3(side * 0.03, -0.42, -0.10)],
+                        [0.055, 0.04],
+                        8
+                    );
+                    shoulder.add(forearm);
+
+                    for (const f of [-0.02, 0.02]) {
+                        const claw = new THREE.Mesh(new THREE.ConeGeometry(0.015, 0.08, 5), clawHornMat);
+                        claw.position.set(side * 0.03 + f, -0.45, -0.13);
+                        claw.rotation.x = Math.PI * 0.75;
+                        shoulder.add(claw);
+                    }
+                    return shoulder;
+                };
+                const leftArm = buildForelimb(-1);
+                const rightArm = buildForelimb(1);
+
+                // Articulated Digitigrade Hind Legs (Thigh -> Tibia -> Metatarsal Ankle -> 3-Toed Clawed Foot)
+                const buildHindLeg = (side) => {
+                    const hip = new THREE.Group();
+                    hip.position.set(side * 0.34, 0.02, 0.12);
+                    pelvis.add(hip);
+
+                    // Muscular Thigh
+                    const thigh = createOrganicSegment(
+                        [new THREE.Vector3(0, 0, 0), new THREE.Vector3(side * 0.04, -0.58, -0.16)],
+                        [0.24, 0.15],
+                        10
+                    );
+                    hip.add(thigh);
+
+                    // Knee / Lower Shin (Tibia)
+                    const knee = new THREE.Group();
+                    knee.position.set(side * 0.04, -0.58, -0.16);
+                    hip.add(knee);
+
+                    const shin = createOrganicSegment(
+                        [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, -0.54, 0.18)],
+                        [0.14, 0.085],
+                        10
+                    );
+                    knee.add(shin);
+
+                    // Digitigrade Ankle & Metatarsal
+                    const ankle = new THREE.Group();
+                    ankle.position.set(0, -0.54, 0.18);
+                    knee.add(ankle);
+
+                    const metatarsal = createOrganicSegment(
+                        [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, -0.34, -0.08)],
+                        [0.08, 0.065],
+                        8
+                    );
+                    ankle.add(metatarsal);
+
+                    // 3-Toed Clawed Foot
+                    const foot = new THREE.Group();
+                    foot.position.set(0, -0.34, -0.08);
+                    ankle.add(foot);
+
+                    for (const toeAngle of [-0.28, 0, 0.28]) {
+                        const toe = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.045, 0.24), skinMat);
+                        toe.position.set(Math.sin(toeAngle) * 0.09, 0.02, -0.10);
+                        toe.rotation.y = toeAngle;
+                        toe.castShadow = true;
+                        foot.add(toe);
+
+                        const claw = new THREE.Mesh(new THREE.ConeGeometry(0.024, 0.09, 5), clawHornMat);
+                        claw.position.set(Math.sin(toeAngle) * 0.12, 0.015, -0.23);
+                        claw.rotation.x = -Math.PI * 0.45;
+                        claw.rotation.y = toeAngle;
+                        foot.add(claw);
+                    }
+
+                    return { hip, knee, ankle, foot };
+                };
+
+                const leftLeg = buildHindLeg(-1);
+                const rightLeg = buildHindLeg(1);
+
+                // Multi-Segment Counter-Balancing Articulated Tail (5 chained segments)
+                const tailSegments = [];
+                let parentTail = pelvis;
+                const tailSpecs = [
+                    { z: 0.62, y: 0.06, len: 0.72, r0: 0.32, r1: 0.24 },
+                    { z: 0.70, y: 0.02, len: 0.75, r0: 0.24, r1: 0.17 },
+                    { z: 0.72, y: 0.01, len: 0.75, r0: 0.17, r1: 0.11 },
+                    { z: 0.72, y: 0.00, len: 0.70, r0: 0.11, r1: 0.06 },
+                    { z: 0.68, y: 0.00, len: 0.65, r0: 0.06, r1: 0.02 }
+                ];
+
+                tailSpecs.forEach((spec, idx) => {
+                    const segGroup = new THREE.Group();
+                    segGroup.position.set(0, spec.y, spec.z);
+                    parentTail.add(segGroup);
+
+                    const segMesh = createOrganicSegment(
+                        [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, spec.len)],
+                        [spec.r0, spec.r1],
+                        10
+                    );
+                    segGroup.add(segMesh);
+
+                    if (idx < 3) {
+                        const tSpine = new THREE.Mesh(new THREE.ConeGeometry(0.03, 0.12, 5), spineMat);
+                        tSpine.position.set(0, spec.r0 * 0.95, spec.len * 0.5);
+                        tSpine.rotation.x = -0.3;
+                        segGroup.add(tSpine);
+                    }
+
+                    tailSegments.push(segGroup);
+                    parentTail = segGroup;
+                });
+
+                this.theropodRig = {
+                    pelvis,
+                    torso,
+                    neck,
+                    head,
+                    lowerJaw,
+                    leftArm,
+                    rightArm,
+                    leftLeg,
+                    rightLeg,
+                    tailSegments
+                };
+            }
+
+            /**
+             * 6. Living NPC Dinosaur Herds (Triceratops & Brachiosaurus)
+             */
+            spawnDinosaurHerds() {
+                // Build Triceratops Herd (5 roaming individuals)
+                for (let i = 0; i < 5; i++) {
+                    const trike = this.createTriceratopsModel();
+                    const angle = (i / 5) * Math.PI * 2;
+                    const x = -22 + Math.cos(angle) * 14;
+                    const z = -14 + Math.sin(angle) * 14;
+                    const y = this.getTerrainHeight(x, z);
+                    trike.root.position.set(x, y, z);
+                    this.scene.add(trike.root);
+
+                    this.npcHerds.push({
+                        species: 'triceratops',
+                        root: trike.root,
+                        rig: trike.rig,
+                        heading: Math.random() * Math.PI * 2,
+                        targetHeading: Math.random() * Math.PI * 2,
+                        speed: 1.7 + Math.random() * 0.5,
+                        stridePhase: Math.random() * Math.PI * 2,
+                        turnTimer: 2 + Math.random() * 4,
+                        homeX: -22,
+                        homeZ: -14
+                    });
+                }
+
+                // Build Towering Brachiosaurus Herd (3 long-necked sauropods)
+                for (let i = 0; i < 3; i++) {
+                    const brachi = this.createBrachiosaurusModel();
+                    const x = 30 + (i - 1) * 18;
+                    const z = -22 + i * 16;
+                    const y = this.getTerrainHeight(x, z);
+                    brachi.root.position.set(x, y, z);
+                    this.scene.add(brachi.root);
+
+                    this.npcHerds.push({
+                        species: 'brachiosaurus',
+                        root: brachi.root,
+                        rig: brachi.rig,
+                        heading: Math.random() * Math.PI * 2,
+                        targetHeading: Math.random() * Math.PI * 2,
+                        speed: 1.35 + Math.random() * 0.35,
+                        stridePhase: Math.random() * Math.PI * 2,
+                        turnTimer: 3 + Math.random() * 5,
+                        homeX: 30,
+                        homeZ: -16
+                    });
+                }
+            }
+
+            createTriceratopsModel() {
+                const root = new THREE.Group();
+                const hideMat = new THREE.MeshStandardMaterial({
+                    map: this.texTrikeAlbedo,
+                    bumpMap: this.texTheropodBump,
+                    bumpScale: 0.04,
+                    roughness: 0.75
+                });
+                const hornMat = new THREE.MeshStandardMaterial({ color: 0xe6dec8, roughness: 0.35 });
+
+                // Heavy Barrel Body
+                const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.75, 1.3, 10, 14), hideMat);
+                body.rotation.x = Math.PI / 2;
+                body.position.set(0, 1.25, 0);
+                body.castShadow = true;
+                body.receiveShadow = true;
+                root.add(body);
+
+                // Head & Large Bone Frill
+                const headGroup = new THREE.Group();
+                headGroup.position.set(0, 1.25, -1.25);
+                root.add(headGroup);
+
+                const skull = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.58, 0.85), hideMat);
+                skull.position.set(0, -0.05, -0.35);
+                skull.castShadow = true;
+                headGroup.add(skull);
+
+                const frill = new THREE.Mesh(new THREE.CylinderGeometry(0.82, 0.65, 0.16, 14), hideMat);
+                frill.rotation.x = Math.PI * 0.36;
+                frill.position.set(0, 0.35, 0.05);
+                frill.castShadow = true;
+                headGroup.add(frill);
+
+                // 2 Long Brow Horns + 1 Nose Horn
+                for (const side of [-1, 1]) {
+                    const browHorn = new THREE.Mesh(new THREE.ConeGeometry(0.075, 0.85, 8), hornMat);
+                    browHorn.position.set(side * 0.24, 0.25, -0.68);
+                    browHorn.rotation.x = -Math.PI * 0.38;
+                    browHorn.rotation.z = -side * 0.12;
+                    browHorn.castShadow = true;
+                    headGroup.add(browHorn);
+                }
+                const noseHorn = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.32, 8), hornMat);
+                noseHorn.position.set(0, 0.12, -0.78);
+                noseHorn.rotation.x = -Math.PI * 0.22;
+                headGroup.add(noseHorn);
+
+                // 4 Pillar Legs
+                const legs = [];
+                const legOffsets = [
+                    [-0.55, 1.0, -0.75],
+                    [0.55, 1.0, -0.75],
+                    [-0.58, 1.05, 0.72],
+                    [0.58, 1.05, 0.72]
+                ];
+                legOffsets.forEach(([lx, ly, lz]) => {
+                    const legPivot = new THREE.Group();
+                    legPivot.position.set(lx, ly, lz);
+                    const legMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.18, 1.05, 10), hideMat);
+                    legMesh.position.y = -0.5;
+                    legMesh.castShadow = true;
+                    legPivot.add(legMesh);
+                    root.add(legPivot);
+                    legs.push(legPivot);
+                });
+
+                // Tail
+                const tail = new THREE.Group();
+                tail.position.set(0, 1.25, 1.1);
+                const tailMesh = new THREE.Mesh(new THREE.ConeGeometry(0.28, 1.35, 10), hideMat);
+                tailMesh.rotation.x = Math.PI * 0.58;
+                tailMesh.position.set(0, -0.15, 0.6);
+                tailMesh.castShadow = true;
+                tail.add(tailMesh);
+                root.add(tail);
+
+                return { root, rig: { headGroup, legs, tail } };
+            }
+
+            createBrachiosaurusModel() {
+                const root = new THREE.Group();
+                const hideMat = new THREE.MeshStandardMaterial({
+                    map: this.texBrachiAlbedo,
+                    bumpMap: this.texTheropodBump,
+                    bumpScale: 0.04,
+                    roughness: 0.78
+                });
+
+                // Massive Sloped Sauropod Torso
+                const body = new THREE.Mesh(new THREE.CapsuleGeometry(1.35, 2.5, 12, 16), hideMat);
+                body.rotation.x = Math.PI * 0.44;
+                body.position.set(0, 3.3, 0);
+                body.castShadow = true;
+                body.receiveShadow = true;
+                root.add(body);
+
+                // Towering Articulated Neck & Crest Head
+                const neckPivot = new THREE.Group();
+                neckPivot.position.set(0, 3.9, -1.6);
+                root.add(neckPivot);
+
+                const neckCurve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(0, 0, 0),
+                    new THREE.Vector3(0, 2.6, -0.8),
+                    new THREE.Vector3(0, 5.2, -1.1),
+                    new THREE.Vector3(0, 6.6, -1.4)
+                ]);
+                const neckGeo = new THREE.TubeGeometry(neckCurve, 18, 0.44, 10, false);
+                const nPos = neckGeo.attributes.position;
+                const v = new THREE.Vector3();
+                const c = new THREE.Vector3();
+                for (let i = 0; i <= 18; i++) {
+                    const t = i / 18;
+                    neckCurve.getPointAt(t, c);
+                    const scale = THREE.MathUtils.lerp(1.3, 0.48, t);
+                    for (let j = 0; j <= 10; j++) {
+                        const idx = i * 11 + j;
+                        v.fromBufferAttribute(nPos, idx).sub(c).multiplyScalar(scale).add(c);
+                        nPos.setXYZ(idx, v.x, v.y, v.z);
+                    }
+                }
+                neckGeo.computeVertexNormals();
+                const neckMesh = new THREE.Mesh(neckGeo, hideMat);
+                neckMesh.castShadow = true;
+                neckPivot.add(neckMesh);
+
+                // Elevated Sauropod Head with Nasal Crest
+                const head = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.48, 0.78), hideMat);
+                head.position.set(0, 6.65, -1.65);
+                head.castShadow = true;
+                neckPivot.add(head);
+
+                // 4 Tall Pillar Legs (Forelegs taller than hindlegs)
+                const legs = [];
+                const legSpecs = [
+                    [-0.95, 3.1, -1.35, 3.15],
+                    [0.95, 3.1, -1.35, 3.15],
+                    [-0.95, 2.5, 1.35, 2.55],
+                    [0.95, 2.5, 1.35, 2.55]
+                ];
+                legSpecs.forEach(([lx, ly, lz, h]) => {
+                    const legPivot = new THREE.Group();
+                    legPivot.position.set(lx, ly, lz);
+                    const legMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.30, h, 10), hideMat);
+                    legMesh.position.y = -h * 0.5;
+                    legMesh.castShadow = true;
+                    legPivot.add(legMesh);
+                    root.add(legPivot);
+                    legs.push(legPivot);
+                });
+
+                // Long Whip Tail
+                const tail = new THREE.Group();
+                tail.position.set(0, 2.7, 1.8);
+                const tailMesh = new THREE.Mesh(new THREE.ConeGeometry(0.55, 4.2, 10), hideMat);
+                tailMesh.rotation.x = Math.PI * 0.56;
+                tailMesh.position.set(0, -0.35, 2.0);
+                tailMesh.castShadow = true;
+                tail.add(tailMesh);
+                root.add(tail);
+
+                return { root, rig: { neckPivot, legs, tail } };
+            }
+
+            /**
+             * 7. All 5 Distinct Botanical Tree Species Matching Reference Silhouettes
+             */
+            createBotanicalTreeArchetype(variant = 0) {
+                const woodGeometries = [];
+                const leafGeometries = [];
+
+                const addCurvedLimb = (points, rBottom, rTop, radialSegs = 8) => {
+                    const curve = new THREE.CatmullRomCurve3(points);
+                    const tubularSegs = 14;
+                    const geo = new THREE.TubeGeometry(curve, tubularSegs, 1, radialSegs, false);
+                    const pos = geo.attributes.position;
+                    const v = new THREE.Vector3();
+                    const center = new THREE.Vector3();
+
+                    for (let i = 0; i <= tubularSegs; i++) {
+                        const t = i / tubularSegs;
+                        curve.getPointAt(t, center);
+                        const radius = THREE.MathUtils.lerp(rBottom, rTop, Math.pow(t, 0.82));
+                        for (let j = 0; j <= radialSegs; j++) {
+                            const idx = i * (radialSegs + 1) + j;
+                            v.fromBufferAttribute(pos, idx).sub(center).multiplyScalar(radius).add(center);
+                            pos.setXYZ(idx, v.x, v.y, v.z);
+                        }
+                    }
+                    geo.computeVertexNormals();
+                    woodGeometries.push(geo);
+                };
+
+                const addFoliageCluster = (centerPos, radiusX, radiusY, cardCount = 15, flatness = 0.42, crownBottomY = 1.0, crownTopY = 6.0) => {
+                    for (let c = 0; c < cardCount; c++) {
+                        const angle = (c / cardCount) * Math.PI * 2 + Math.random() * 0.55;
+                        const dist = Math.sqrt(Math.random()) * radiusX * 0.78;
+                        const cardW = radiusX * (0.72 + Math.random() * 0.42);
+                        const cardH = cardW * 0.88;
+
+                        const card = new THREE.PlaneGeometry(cardW, cardH, 2, 2);
+                        const cPos = card.attributes.position;
+                        const colors = new Float32Array(cPos.count * 3);
+
+                        const tiltX = -Math.PI / 2 + (Math.random() - 0.5) * flatness;
+                        const tiltZ = (Math.random() - 0.5) * flatness;
+                        const rotY = Math.random() * Math.PI * 2;
+
+                        const mat4 = new THREE.Matrix4();
+                        const quat = new THREE.Quaternion().setFromEuler(new THREE.Euler(tiltX, rotY, tiltZ, 'YXZ'));
+                        const pos = new THREE.Vector3(
+                            centerPos.x + Math.cos(angle) * dist,
+                            centerPos.y + (Math.random() - 0.35) * radiusY,
+                            centerPos.z + Math.sin(angle) * dist
+                        );
+                        mat4.compose(pos, quat, new THREE.Vector3(1, 1, 1));
+
+                        const vWorld = new THREE.Vector3();
+                        for (let k = 0; k < cPos.count; k++) {
+                            const px = cPos.getX(k);
+                            const py = cPos.getY(k);
+                            const arch = -0.16 * ((px * px + py * py) / (cardW * cardW));
+                            cPos.setZ(k, arch);
+
+                            vWorld.set(px, py, arch).applyMatrix4(mat4);
+                            const heightNorm = THREE.MathUtils.clamp((vWorld.y - crownBottomY) / Math.max(0.5, crownTopY - crownBottomY), 0, 1);
+                            const radialNorm = THREE.MathUtils.clamp(Math.hypot(vWorld.x, vWorld.z) / (radiusX * 2.2), 0, 1);
+                            const ao = THREE.MathUtils.clamp(0.46 + heightNorm * 0.46 + radialNorm * 0.22, 0.42, 1.15);
+
+                            colors[k * 3] = ao * (0.96 + heightNorm * 0.08);
+                            colors[k * 3 + 1] = ao * (0.98 + heightNorm * 0.05);
+                            colors[k * 3 + 2] = ao * 0.90;
+                        }
+
+                        card.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                        card.computeVertexNormals();
+                        card.applyMatrix4(mat4);
+                        leafGeometries.push(card);
+                    }
+                };
+
+                const addButtressRoots = (rootCount, trunkRadius, spreadMult, heightReach) => {
+                    for (let r = 0; r < rootCount; r++) {
+                        const ra = (r / rootCount) * Math.PI * 2 + (r % 2) * 0.18;
+                        const rootReach = trunkRadius * spreadMult * (0.85 + Math.random() * 0.3);
+                        addCurvedLimb([
+                            new THREE.Vector3(Math.cos(ra) * rootReach, -0.35, Math.sin(ra) * rootReach),
+                            new THREE.Vector3(Math.cos(ra) * rootReach * 0.52, heightReach * 0.34, Math.sin(ra) * rootReach * 0.52),
+                            new THREE.Vector3(Math.cos(ra) * trunkRadius * 0.22, heightReach, Math.sin(ra) * trunkRadius * 0.22)
+                        ], trunkRadius * 0.54, trunkRadius * 0.20, 6);
+                    }
+                };
+
+                if (variant === 0) {
+                    // 1) Low-trunk wide flattened dome umbrella tree
+                    const trunkH = 1.55;
+                    const trunkR = 0.48;
+                    addButtressRoots(7, trunkR, 2.9, 1.05);
+
+                    const trunkTop = new THREE.Vector3(0.10, trunkH, -0.06);
+                    addCurvedLimb([
+                        new THREE.Vector3(0, -0.25, 0),
+                        new THREE.Vector3(0.05, trunkH * 0.5, -0.03),
+                        trunkTop
+                    ], trunkR, trunkR * 0.66, 9);
+
+                    const boughs = 8;
+                    const spread = 6.6;
+                    for (let b = 0; b < boughs; b++) {
+                        const ba = (b / boughs) * Math.PI * 2 + (Math.random() - 0.5) * 0.22;
+                        const reach = spread * (0.84 + Math.random() * 0.24);
+                        const mid = new THREE.Vector3(
+                            trunkTop.x + Math.cos(ba) * reach * 0.52,
+                            trunkTop.y + 0.58,
+                            trunkTop.z + Math.sin(ba) * reach * 0.52
+                        );
+                        const tip = new THREE.Vector3(
+                            trunkTop.x + Math.cos(ba) * reach,
+                            trunkTop.y + 0.72 + (Math.random() - 0.5) * 0.22,
+                            trunkTop.z + Math.sin(ba) * reach
+                        );
+                        addCurvedLimb([trunkTop, mid, tip], trunkR * 0.46, trunkR * 0.11, 7);
+
+                        for (const side of [-1, 1]) {
+                            const fa = ba + side * 0.44;
+                            const fTip = new THREE.Vector3(
+                                mid.x + Math.cos(fa) * reach * 0.54,
+                                tip.y + 0.18,
+                                mid.z + Math.sin(fa) * reach * 0.54
+                            );
+                            addCurvedLimb([mid, fTip], trunkR * 0.22, trunkR * 0.08, 5);
+                            addFoliageCluster(fTip, 2.55, 0.58, 14, 0.36, 1.6, 4.3);
+                        }
+                        addFoliageCluster(tip, 2.85, 0.62, 16, 0.36, 1.6, 4.3);
+                    }
+                    addFoliageCluster(new THREE.Vector3(trunkTop.x, trunkTop.y + 1.65, trunkTop.z), spread * 0.88, 0.85, 30, 0.38, 1.6, 4.3);
+                    addFoliageCluster(new THREE.Vector3(trunkTop.x, trunkTop.y + 2.35, trunkTop.z), spread * 0.54, 0.58, 20, 0.35, 1.6, 4.3);
+
+                } else if (variant === 1) {
+                    // 2) Massive tall cathedral-dome banyan/acacia tree
+                    const trunkH = 2.65;
+                    const trunkR = 0.68;
+                    addButtressRoots(9, trunkR, 3.2, 1.65);
+
+                    const trunkTop = new THREE.Vector3(-0.20, trunkH, 0.14);
+                    addCurvedLimb([
+                        new THREE.Vector3(0, -0.3, 0),
+                        new THREE.Vector3(-0.10, trunkH * 0.5, 0.07),
+                        trunkTop
+                    ], trunkR, trunkR * 0.70, 10);
+
+                    const boughs = 9;
+                    const spread = 7.8;
+                    for (let b = 0; b < boughs; b++) {
+                        const ba = (b / boughs) * Math.PI * 2 + (Math.random() - 0.5) * 0.22;
+                        const reach = spread * (0.86 + Math.random() * 0.24);
+                        const mid = new THREE.Vector3(
+                            trunkTop.x + Math.cos(ba) * reach * 0.50,
+                            trunkTop.y + 0.95,
+                            trunkTop.z + Math.sin(ba) * reach * 0.50
+                        );
+                        const tip = new THREE.Vector3(
+                            trunkTop.x + Math.cos(ba) * reach,
+                            trunkTop.y + 1.05 + (Math.random() - 0.5) * 0.32,
+                            trunkTop.z + Math.sin(ba) * reach
+                        );
+                        addCurvedLimb([trunkTop, mid, tip], trunkR * 0.50, trunkR * 0.13, 7);
+
+                        for (const side of [-1, 1]) {
+                            const fa = ba + side * 0.42;
+                            const fTip = new THREE.Vector3(
+                                mid.x + Math.cos(fa) * reach * 0.58,
+                                tip.y + 0.48,
+                                mid.z + Math.sin(fa) * reach * 0.58
+                            );
+                            addCurvedLimb([mid, fTip], trunkR * 0.25, trunkR * 0.08, 5);
+                            addFoliageCluster(fTip, 3.1, 0.85, 16, 0.42, 2.8, 7.6);
+                        }
+                        addFoliageCluster(tip, 3.4, 0.90, 18, 0.42, 2.8, 7.6);
+                    }
+                    addFoliageCluster(new THREE.Vector3(trunkTop.x, trunkTop.y + 2.35, trunkTop.z), spread * 0.90, 1.1, 32, 0.44, 2.8, 7.6);
+                    addFoliageCluster(new THREE.Vector3(trunkTop.x, trunkTop.y + 3.55, trunkTop.z), spread * 0.66, 0.95, 26, 0.42, 2.8, 7.6);
+                    addFoliageCluster(new THREE.Vector3(trunkTop.x, trunkTop.y + 4.55, trunkTop.z), spread * 0.40, 0.70, 18, 0.40, 2.8, 7.6);
+
+                } else if (variant === 2) {
+                    // 3) Slender S-curved pale-bark sapling
+                    const trunkH = 3.85;
+                    const trunkR = 0.20;
+                    addButtressRoots(4, trunkR, 2.1, 0.65);
+
+                    const midTrunk = new THREE.Vector3(-0.38, trunkH * 0.48, 0.24);
+                    const trunkTop = new THREE.Vector3(0.32, trunkH, -0.16);
+                    addCurvedLimb([
+                        new THREE.Vector3(0, -0.18, 0),
+                        midTrunk,
+                        trunkTop
+                    ], trunkR, trunkR * 0.52, 8);
+
+                    const forks = 6;
+                    const spread = 3.25;
+                    for (let b = 0; b < forks; b++) {
+                        const ba = (b / forks) * Math.PI * 2 + 0.35;
+                        const reach = spread * (0.72 + Math.random() * 0.36);
+                        const startPt = b < 2 ? midTrunk.clone().lerp(trunkTop, 0.58 + b * 0.18) : trunkTop;
+                        const midLimb = new THREE.Vector3(
+                            startPt.x + Math.cos(ba) * reach * 0.52,
+                            startPt.y + 0.75 + Math.random() * 0.45,
+                            startPt.z + Math.sin(ba) * reach * 0.52
+                        );
+                        const tip = new THREE.Vector3(
+                            startPt.x + Math.cos(ba) * reach,
+                            startPt.y + 1.45 + Math.random() * 0.85,
+                            startPt.z + Math.sin(ba) * reach
+                        );
+                        addCurvedLimb([startPt, midLimb, tip], trunkR * 0.42, trunkR * 0.10, 6);
+                        addFoliageCluster(tip, 1.85, 0.58, 12, 0.45, 3.6, 6.4);
+                    }
+                    addFoliageCluster(new THREE.Vector3(trunkTop.x, trunkTop.y + 2.15, trunkTop.z), 2.35, 0.78, 16, 0.44, 3.6, 6.4);
+
+                } else if (variant === 3) {
+                    // 4) Low-branching sprawling tree with cascading branches near ground
+                    const trunkH = 1.35;
+                    const trunkR = 0.32;
+                    addButtressRoots(4, trunkR, 2.2, 0.55);
+
+                    const trunkTop = new THREE.Vector3(0.14, trunkH, 0.08);
+                    addCurvedLimb([
+                        new THREE.Vector3(0, -0.18, 0),
+                        trunkTop
+                    ], trunkR, trunkR * 0.65, 8);
+
+                    const boughs = 8;
+                    const spread = 4.9;
+                    for (let b = 0; b < boughs; b++) {
+                        const ba = (b / boughs) * Math.PI * 2 + (Math.random() - 0.5) * 0.28;
+                        const reach = spread * (0.78 + Math.random() * 0.34);
+                        const isLowLimb = b % 2 === 0;
+                        const origin = isLowLimb ? new THREE.Vector3(0, 0.62, 0) : trunkTop;
+                        const mid = new THREE.Vector3(
+                            origin.x + Math.cos(ba) * reach * 0.54,
+                            origin.y + (isLowLimb ? 0.38 : 1.05),
+                            origin.z + Math.sin(ba) * reach * 0.54
+                        );
+                        const tip = new THREE.Vector3(
+                            origin.x + Math.cos(ba) * reach,
+                            origin.y + (isLowLimb ? 0.52 : 1.85) + Math.random() * 0.35,
+                            origin.z + Math.sin(ba) * reach
+                        );
+                        addCurvedLimb([origin, mid, tip], trunkR * 0.38, trunkR * 0.09, 6);
+                        addFoliageCluster(mid, 2.05, 0.75, 12, 0.58, 0.7, 4.3);
+                        addFoliageCluster(tip, 2.45, 0.85, 15, 0.58, 0.7, 4.3);
+                    }
+                    addFoliageCluster(new THREE.Vector3(0, 2.75, 0), 3.5, 1.05, 24, 0.55, 0.7, 4.3);
+
+                } else {
+                    // 5) Flat-topped pale-trunk savanna/rain tree with exposed Y/V inner branches
+                    const trunkH = 3.85;
+                    const trunkR = 0.35;
+                    addButtressRoots(5, trunkR, 2.4, 0.95);
+
+                    const trunkMid = new THREE.Vector3(0.24, trunkH * 0.50, -0.08);
+                    const trunkTop = new THREE.Vector3(-0.14, trunkH, 0.06);
+                    addCurvedLimb([
+                        new THREE.Vector3(0, -0.22, 0),
+                        trunkMid,
+                        trunkTop
+                    ], trunkR, trunkR * 0.64, 9);
+
+                    const boughs = 6;
+                    const spread = 5.9;
+                    for (let b = 0; b < boughs; b++) {
+                        const ba = (b / boughs) * Math.PI * 2 + (Math.random() - 0.5) * 0.24;
+                        const reach = spread * (0.84 + Math.random() * 0.22);
+                        const yFork = new THREE.Vector3(
+                            trunkTop.x + Math.cos(ba) * reach * 0.45,
+                            trunkTop.y + 1.25,
+                            trunkTop.z + Math.sin(ba) * reach * 0.45
+                        );
+                        const tip = new THREE.Vector3(
+                            trunkTop.x + Math.cos(ba) * reach,
+                            trunkTop.y + 2.15 + (Math.random() - 0.5) * 0.20,
+                            trunkTop.z + Math.sin(ba) * reach
+                        );
+                        addCurvedLimb([trunkTop, yFork, tip], trunkR * 0.46, trunkR * 0.13, 7);
+
+                        for (const side of [-1, 1]) {
+                            const fa = ba + side * 0.46;
+                            const fTip = new THREE.Vector3(
+                                yFork.x + Math.cos(fa) * reach * 0.56,
+                                trunkTop.y + 2.20 + (Math.random() - 0.5) * 0.18,
+                                yFork.z + Math.sin(fa) * reach * 0.56
+                            );
+                            addCurvedLimb([yFork, fTip], trunkR * 0.24, trunkR * 0.08, 5);
+                            addFoliageCluster(fTip, 2.45, 0.48, 13, 0.30, 5.4, 6.7);
+                        }
+                        addFoliageCluster(tip, 2.75, 0.52, 15, 0.30, 5.4, 6.7);
+                    }
+                    addFoliageCluster(new THREE.Vector3(trunkTop.x, trunkTop.y + 2.45, trunkTop.z), spread * 0.85, 0.58, 28, 0.30, 5.4, 6.7);
+                }
+
+                const mergedWood = mergeGeometries(woodGeometries, false);
+                const mergedLeaves = mergeGeometries(leafGeometries, false);
+
+                woodGeometries.forEach(g => g.dispose());
+                leafGeometries.forEach(g => g.dispose());
+
+                return { woodGeo: mergedWood, leafGeo: mergedLeaves };
+            }
+
+            applyWindShader(material, swayAmplitude = 0.14, frequency = 1.6, isTreeLeaf = false) {
+                const windUniform = { value: 0 };
+                this.windUniforms.push(windUniform);
+
+                material.onBeforeCompile = (shader) => {
+                    shader.uniforms.uTime = windUniform;
+                    shader.uniforms.uSunDir = { value: this.sunLight ? this.sunLight.position.clone().normalize() : new THREE.Vector3(0.5, 0.8, 0.3) };
+                    this.sunUniforms.push(shader.uniforms.uSunDir);
+
+                    shader.vertexShader = `
+                        uniform float uTime;
+                        varying vec3 vLeafWorldNormal;
+                        varying vec3 vLeafWorldPos;
+                        ${shader.vertexShader}
+                    `.replace(
+                        '#include <begin_vertex>',
+                        `
+                        #include <begin_vertex>
+                        vec4 worldPos = vec4(transformed, 1.0);
+                        #ifdef USE_INSTANCING
+                            worldPos = instanceMatrix * worldPos;
+                        #endif
+                        float heightFactor = clamp(transformed.y * 0.24, 0.0, 1.5);
+                        float wave = sin(uTime * ${frequency.toFixed(2)} + worldPos.x * 0.45 + worldPos.z * 0.35);
+                        float gust = cos(uTime * ${(frequency * 0.6).toFixed(2)} + worldPos.z * 0.7);
+                        transformed.x += (wave + gust * 0.5) * ${swayAmplitude.toFixed(3)} * heightFactor;
+                        transformed.z += (gust - wave * 0.4) * ${(swayAmplitude * 0.8).toFixed(3)} * heightFactor;
+                        vLeafWorldPos = (modelMatrix * worldPos).xyz;
+                        vLeafWorldNormal = normalize(mat3(modelMatrix) * normal);
+                        `
+                    );
+
+                    if (isTreeLeaf) {
+                        shader.fragmentShader = `
+                            uniform vec3 uSunDir;
+                            varying vec3 vLeafWorldNormal;
+                            varying vec3 vLeafWorldPos;
+                            ${shader.fragmentShader}
+                        `.replace(
+                            '#include <dithering_fragment>',
+                            `
+                            vec3 viewDir = normalize(cameraPosition - vLeafWorldPos);
+                            float backLight = pow(clamp(dot(viewDir, -normalize(uSunDir)), 0.0, 1.0), 2.5);
+                            float topSun = clamp(vLeafWorldNormal.y * 0.5 + 0.5, 0.0, 1.0);
+
+                            vec3 sssTint = vec3(0.16, 0.24, 0.04) * backLight * gl_FragColor.g;
+                            vec3 crownHighlight = vec3(0.05, 0.075, 0.015) * topSun * gl_FragColor.g;
+
+                            gl_FragColor.rgb += sssTint + crownHighlight;
+                            #include <dithering_fragment>
+                            `
+                        );
+                    }
+                };
+            }
+
+            generateBotanicalTrees() {
+                const darkBarkMat = new THREE.MeshStandardMaterial({
+                    map: this.texDarkBarkAlbedo,
+                    bumpMap: this.texBarkBump,
+                    bumpScale: 0.18,
+                    roughness: 0.92,
+                    metalness: 0.02
+                });
+
+                const paleBarkMat = new THREE.MeshStandardMaterial({
+                    map: this.texPaleBarkAlbedo,
+                    bumpMap: this.texBarkBump,
+                    bumpScale: 0.08,
+                    roughness: 0.82,
+                    metalness: 0.02
+                });
+
+                const leafMat = new THREE.MeshStandardMaterial({
+                    map: this.texLeafCluster,
+                    vertexColors: true,
+                    alphaTest: 0.38,
+                    side: THREE.DoubleSide,
+                    roughness: 0.64,
+                    metalness: 0.02
+                });
+                this.applyWindShader(leafMat, 0.10, 1.45, true);
+
+                const speciesConfigs = [
+                    { variant: 0, bark: darkBarkMat, count: 24, minScale: 0.85, maxScale: 1.35 },
+                    { variant: 1, bark: darkBarkMat, count: 20, minScale: 0.85, maxScale: 1.30 },
+                    { variant: 2, bark: paleBarkMat, count: 26, minScale: 0.85, maxScale: 1.40 },
+                    { variant: 3, bark: paleBarkMat, count: 26, minScale: 0.85, maxScale: 1.35 },
+                    { variant: 4, bark: paleBarkMat, count: 26, minScale: 0.85, maxScale: 1.35 }
+                ];
+
+                this.treeBatches = [];
+                const dummy = new THREE.Object3D();
+                const leafTint = new THREE.Color();
+
+                // Hero grove showcasing all 5 tree silhouettes around the central clearing & riverbank
+                const heroPlacements = [
+                    { variant: 4, x: -16, z: 2, scale: 1.15, rot: 0.4 },
+                    { variant: 1, x: 26, z: -12, scale: 1.18, rot: 1.8 },
+                    { variant: 2, x: -12, z: 12, scale: 1.10, rot: 2.3 },
+                    { variant: 3, x: -2, z: 4, scale: 1.08, rot: 0.9 },
+                    { variant: 0, x: -6, z: -14, scale: 1.18, rot: 1.2 }
+                ];
+
+                speciesConfigs.forEach((cfg) => {
+                    const arch = this.createBotanicalTreeArchetype(cfg.variant);
+                    const woodInst = new THREE.InstancedMesh(arch.woodGeo, cfg.bark, cfg.count);
+                    const leafInst = new THREE.InstancedMesh(arch.leafGeo, leafMat, cfg.count);
+
+                    woodInst.castShadow = true;
+                    woodInst.receiveShadow = true;
+                    leafInst.castShadow = true;
+                    leafInst.receiveShadow = true;
+
+                    this.scene.add(woodInst);
+                    this.scene.add(leafInst);
+
+                    let placed = 0;
+                    heroPlacements.filter(h => h.variant === cfg.variant).forEach(h => {
+                        const y = this.getTerrainHeight(h.x, h.z);
+                        if (y > this.waterLevel + 0.25) {
+                            dummy.position.set(h.x, y - 0.1, h.z);
+                            dummy.rotation.y = h.rot;
+                            dummy.scale.set(h.scale, h.scale, h.scale);
+                            dummy.updateMatrix();
+                            woodInst.setMatrixAt(placed, dummy.matrix);
+                            leafInst.setMatrixAt(placed, dummy.matrix);
+                            leafTint.setHSL(0.245, 0.44, 0.52);
+                            leafInst.setColorAt(placed, leafTint);
+                            placed++;
+                        }
+                    });
+
+                    for (let i = 0; i < cfg.count * 5 && placed < cfg.count; i++) {
+                        const x = (Math.random() - 0.5) * 260;
+                        const z = (Math.random() - 0.5) * 260;
+                        const y = this.getTerrainHeight(x, z);
+
+                        // Never spawn trees submerged in the river/lake or on top of spawn
+                        if (y < this.waterLevel + 0.45) continue;
+                        if (Math.hypot(x + 4, z - 16) < 8) continue;
+
+                        const scale = cfg.minScale + Math.random() * (cfg.maxScale - cfg.minScale);
+                        dummy.position.set(x, y - 0.1, z);
+                        dummy.rotation.y = Math.random() * Math.PI * 2;
+                        dummy.scale.set(scale, scale * (0.92 + Math.random() * 0.2), scale);
+                        dummy.updateMatrix();
+
+                        woodInst.setMatrixAt(placed, dummy.matrix);
+                        leafInst.setMatrixAt(placed, dummy.matrix);
+
+                        leafTint.setHSL(0.24 + (Math.random() - 0.5) * 0.045, 0.43, 0.47 + Math.random() * 0.14);
+                        leafInst.setColorAt(placed, leafTint);
+                        placed++;
+                    }
+
+                    woodInst.count = placed;
+                    leafInst.count = placed;
+                    if (leafInst.instanceColor) leafInst.instanceColor.needsUpdate = true;
+
+                    this.treeBatches.push({
+                        woodInst,
+                        leafInst,
+                        totalPlaced: placed
+                    });
+                });
+            }
+
+            /**
+             * 8. Prehistoric Ferns, Swaying Meadow Grass & Displaced Mossy Boulders
+             */
+            generatePrehistoricFloraAndRocks() {
+                const dummy = new THREE.Object3D();
+
+                // A. Prehistoric Ferns (Crossed curved frond clusters)
+                const fernCount = 900;
+                const f1 = new THREE.PlaneGeometry(1.3, 1.2, 2, 2);
+                f1.translate(0, 0.55, 0);
+                f1.rotateX(0.32);
+                const f2 = f1.clone();
+                f2.rotateY(Math.PI * 0.5);
+                const f3 = f1.clone();
+                f3.rotateY(Math.PI * 0.25);
+                const fernGeo = mergeGeometries([f1, f2, f3], false);
+
+                const fernMat = new THREE.MeshStandardMaterial({
+                    map: this.texFernFrond,
+                    alphaTest: 0.35,
+                    side: THREE.DoubleSide,
+                    roughness: 0.72
+                });
+                this.applyWindShader(fernMat, 0.18, 1.85, true);
+
+                const fernInst = new THREE.InstancedMesh(fernGeo, fernMat, fernCount);
+                fernInst.castShadow = true;
+                this.scene.add(fernInst);
+
+                let placedFerns = 0;
+                for (let i = 0; i < fernCount * 2 && placedFerns < fernCount; i++) {
+                    const x = (Math.random() - 0.5) * 200;
+                    const z = (Math.random() - 0.5) * 200;
+                    const y = this.getTerrainHeight(x, z);
+                    if (y < this.waterLevel + 0.15) continue;
+
+                    const s = 0.75 + Math.random() * 0.85;
+                    dummy.position.set(x, y - 0.05, z);
+                    dummy.rotation.y = Math.random() * Math.PI * 2;
+                    dummy.scale.set(s, s, s);
+                    dummy.updateMatrix();
+                    fernInst.setMatrixAt(placedFerns, dummy.matrix);
+                    placedFerns++;
+                }
+                fernInst.count = placedFerns;
+                this.fernInst = fernInst;
+                this.placedFerns = placedFerns;
+
+                // B. Tall Meadow Grass
+                const grassCount = 3400;
+                const grassGeo = new THREE.PlaneGeometry(0.55, 1.25, 1, 2);
+                grassGeo.translate(0, 0.6, 0);
+
+                const grassMat = new THREE.MeshStandardMaterial({
+                    map: this.texGrassBlade,
+                    alphaTest: 0.35,
+                    side: THREE.DoubleSide,
+                    roughness: 0.75
+                });
+                this.applyWindShader(grassMat, 0.24, 2.2, false);
+
+                const grassInst = new THREE.InstancedMesh(grassGeo, grassMat, grassCount);
+                this.scene.add(grassInst);
+
+                let placedGrass = 0;
+                for (let i = 0; i < grassCount * 2 && placedGrass < grassCount; i++) {
+                    const x = (Math.random() - 0.5) * 180;
+                    const z = (Math.random() - 0.5) * 180;
+                    const y = this.getTerrainHeight(x, z);
+                    if (y < this.waterLevel + 0.12) continue;
+
+                    const s = 0.65 + Math.random() * 0.85;
+                    dummy.position.set(x, y - 0.04, z);
+                    dummy.rotation.y = Math.random() * Math.PI * 2;
+                    dummy.scale.set(s, s, s);
+                    dummy.updateMatrix();
+                    grassInst.setMatrixAt(placedGrass, dummy.matrix);
+                    placedGrass++;
+                }
+                grassInst.count = placedGrass;
+                this.grassInst = grassInst;
+                this.placedGrass = placedGrass;
+
+                // C. Multi-Octave Displaced Mossy River & Valley Boulders
+                const rockGeo = new THREE.IcosahedronGeometry(1.0, 2);
+                const rPos = rockGeo.attributes.position;
+                for (let i = 0; i < rPos.count; i++) {
+                    const vx = rPos.getX(i);
+                    const vy = rPos.getY(i);
+                    const vz = rPos.getZ(i);
+                    const disp = 1.0 + Math.sin(vx * 3.2 + vy * 2.4) * 0.18 + Math.cos(vz * 4.1) * 0.12;
+                    rPos.setXYZ(i, vx * disp * 1.2, vy * disp * 0.75, vz * disp);
+                }
+                rockGeo.computeVertexNormals();
+
+                const rockMat = new THREE.MeshStandardMaterial({
+                    color: 0x565c52,
+                    bumpMap: this.texTerrainBump,
+                    bumpScale: 0.15,
+                    roughness: 0.88,
+                    metalness: 0.05
+                });
+
+                const rockCount = 75;
+                const rockInst = new THREE.InstancedMesh(rockGeo, rockMat, rockCount);
+                rockInst.castShadow = true;
+                rockInst.receiveShadow = true;
+                this.scene.add(rockInst);
+
+                let placedRocks = 0;
+                for (let i = 0; i < rockCount * 2 && placedRocks < rockCount; i++) {
+                    const x = (Math.random() - 0.5) * 210;
+                    const z = (Math.random() - 0.5) * 210;
+                    if (Math.hypot(x + 4, z - 16) < 7) continue;
+                    const y = this.getTerrainHeight(x, z);
+                    const s = 0.7 + Math.random() * 1.8;
+                    dummy.position.set(x, y - 0.15, z);
+                    dummy.rotation.set(Math.random() * 0.3, Math.random() * Math.PI * 2, Math.random() * 0.3);
+                    dummy.scale.set(s, s * 0.85, s);
+                    dummy.updateMatrix();
+                    rockInst.setMatrixAt(placedRocks, dummy.matrix);
+                    placedRocks++;
+                }
+                rockInst.count = placedRocks;
+            }
+
+            applyFoliageDensity() {
+                const d = this.config.foliageDensity;
+                if (this.treeBatches) {
+                    for (const batch of this.treeBatches) {
+                        const visibleCount = Math.max(2, Math.floor(batch.totalPlaced * d));
+                        batch.woodInst.count = visibleCount;
+                        batch.leafInst.count = visibleCount;
+                    }
+                }
+                if (this.fernInst) {
+                    this.fernInst.count = Math.floor(this.placedFerns * d);
+                }
+                if (this.grassInst) {
+                    this.grassInst.count = Math.floor(this.placedGrass * d);
+                }
+            }
+
+            /**
+             * 9. Apex Roar Shockwave, Primal Sense & Physics Meat/Boulder Spawning
+             */
+            triggerApexRoar() {
+                if (this.dino.roarTimer > 0.4) return;
+                this.dino.roarTimer = 1.45;
+                this.showToast('APEX BROADCAST ROAR');
+
+                // Expanding Acoustic Shockwave Ring
+                const ringGeo = new THREE.RingGeometry(0.6, 1.15, 36);
+                ringGeo.rotateX(-Math.PI / 2);
+                const ringMat = new THREE.MeshBasicMaterial({
+                    color: 0xf59e0b,
+                    transparent: true,
+                    opacity: 0.75,
+                    side: THREE.DoubleSide
+                });
+                const ring = new THREE.Mesh(ringGeo, ringMat);
+                ring.position.set(this.dino.position.x, this.dino.position.y + 0.35, this.dino.position.z);
+                this.scene.add(ring);
+                this.roarWaves.push({ mesh: ring, age: 0 });
+            }
+
+            togglePrimalSense() {
+                this.dino.scentActive = !this.dino.scentActive;
+                const vignette = document.getElementById('scent-vignette');
+                const icon = document.getElementById('scent-icon');
+                const label = document.getElementById('hud-scent');
+
+                if (this.dino.scentActive) {
+                    vignette.style.opacity = '1';
+                    icon.className = 'fas fa-eye text-emerald-400';
+                    label.textContent = 'SENSE ON [F]';
+                    label.className = 'text-emerald-300 font-bold';
+                    this.primalSenseLight.intensity = 4.5;
+                    this.showToast('Primal Night-Vision & Scent Active');
+                } else {
+                    vignette.style.opacity = '0';
+                    icon.className = 'fas fa-eye text-stone-500';
+                    label.textContent = 'SENSE [F]';
+                    label.className = 'text-stone-400';
+                    this.primalSenseLight.intensity = 0;
+                }
+            }
+
+            spawnMeatChunk() {
+                const forward = new THREE.Vector3(-Math.sin(this.dino.bodyYaw), 0, -Math.cos(this.dino.bodyYaw));
+                const pos = this.dino.position.clone().addScaledVector(forward, 3.2);
+                const geo = new THREE.DodecahedronGeometry(0.45, 1);
+                const mat = new THREE.MeshStandardMaterial({
+                    color: 0x8f2424,
+                    roughness: 0.45,
+                    metalness: 0.1
+                });
+                const mesh = new THREE.Mesh(geo, mat);
+                mesh.position.set(pos.x, pos.y + 1.5, pos.z);
+                mesh.castShadow = true;
+                this.scene.add(mesh);
+
+                this.physicsChunks.push({
+                    mesh,
+                    velocity: new THREE.Vector3(forward.x * 4, 3.5, forward.z * 4),
+                    radius: 0.45
+                });
+                this.showToast('Dropped Prehistoric Meat Chunk [G]');
+            }
+
+            toggleCameraMode() {
+                const nextMode = this.config.cameraMode === 'tp' ? 'fp' : 'tp';
+                this.setCameraMode(nextMode);
+                this.showToast(nextMode === 'tp' ? "'The Isle' Third-Person Camera" : 'First-Person Snout View');
+            }
+
+            setCameraMode(mode) {
+                this.config.cameraMode = mode;
+                const hudLabel = document.getElementById('hud-cam-mode');
+                const selectEl = document.getElementById('set-cam-mode');
+                if (hudLabel) hudLabel.textContent = mode === 'tp' ? '3RD PERSON [V]' : '1ST PERSON [V]';
+                if (selectEl) selectEl.value = mode;
+
+                if (this.theropodRig) {
+                    // Hide head/neck in FP mode so snout geometry doesn't clip near plane
+                    this.theropodRig.head.visible = (mode === 'tp');
+                    this.theropodRig.neck.visible = (mode === 'tp');
+                }
+            }
+
+            showToast(msg) {
+                const box = document.getElementById('toast-box');
+                const el = document.createElement('div');
+                el.className = 'obsidian-panel px-4 py-2 rounded-lg text-xs mono text-amber-300 border border-amber-500/35 transition-opacity duration-300';
+                el.textContent = `> ${msg}`;
+                box.appendChild(el);
+                setTimeout(() => {
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 300);
+                }, 2000);
+            }
+
+            /**
+             * 10. Controls & UI Bindings
+             */
+            initControls() {
+                const overlay = document.getElementById('settings-overlay');
+                const resumeBtn = document.getElementById('btn-resume');
+                const settingsBtn = document.getElementById('btn-open-settings');
+                const camToggleBtn = document.getElementById('btn-toggle-cam');
+
+                resumeBtn.addEventListener('click', () => {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => overlay.style.display = 'none', 300);
+                    this.isPlaying = true;
+                    document.getElementById('crosshair').style.opacity = '1';
+                    this.renderer.domElement.requestPointerLock();
+                });
+
+                settingsBtn.addEventListener('click', () => {
+                    this.isPlaying = false;
+                    overlay.style.display = 'flex';
+                    setTimeout(() => overlay.style.opacity = '1', 10);
+                    document.getElementById('crosshair').style.opacity = '0';
+                    document.exitPointerLock();
+                });
+
+                camToggleBtn.addEventListener('click', () => this.toggleCameraMode());
+
+                window.addEventListener('keydown', (e) => {
+                    this.keys[e.code] = true;
+
+                    if (e.code === 'KeyV' && this.isPlaying) this.toggleCameraMode();
+                    if (e.code === 'KeyF' && this.isPlaying) this.togglePrimalSense();
+                    if (e.code === 'KeyE' && this.isPlaying) this.triggerApexRoar();
+                    if (e.code === 'KeyG' && this.isPlaying) this.spawnMeatChunk();
+                    if (e.code === 'KeyC' && this.isPlaying) {
+                        this.dino.isCrouching = !this.dino.isCrouching;
+                        document.getElementById('hud-stance').textContent = this.dino.isCrouching ? 'STALK' : 'STAND';
+                    }
+                    if (e.code === 'Escape' && this.isPlaying) {
+                        this.isPlaying = false;
+                        overlay.style.display = 'flex';
+                        setTimeout(() => overlay.style.opacity = '1', 10);
+                        document.getElementById('crosshair').style.opacity = '0';
+                        document.exitPointerLock();
+                    }
+                });
+
+                window.addEventListener('keyup', (e) => {
+                    this.keys[e.code] = false;
+                });
+
+                window.addEventListener('mousemove', (e) => {
+                    if (!this.isPlaying || document.pointerLockElement !== this.renderer.domElement) return;
+                    const sensitivity = 0.0022;
+                    this.dino.camYaw -= e.movementX * sensitivity;
+                    this.dino.camPitch += e.movementY * sensitivity;
+                    this.dino.camPitch = THREE.MathUtils.clamp(this.dino.camPitch, -0.35, 1.15);
+                });
+
+                window.addEventListener('mousedown', (e) => {
+                    if (this.isPlaying && e.button === 0 && document.pointerLockElement === this.renderer.domElement) {
+                        this.triggerApexRoar();
+                    }
+                });
+
+                window.addEventListener('resize', () => {
+                    this.camera.aspect = window.innerWidth / window.innerHeight;
+                    this.camera.updateProjectionMatrix();
+                    this.renderer.setSize(window.innerWidth, window.innerHeight);
+                    this.composer.setSize(window.innerWidth, window.innerHeight);
+                });
+
+                // Mobile Touch Controls
+                const setupTouch = (id, code) => {
+                    const btn = document.getElementById(id);
+                    if (!btn) return;
+                    btn.addEventListener('touchstart', (e) => { e.preventDefault(); this.keys[code] = true; });
+                    btn.addEventListener('touchend', (e) => { e.preventDefault(); this.keys[code] = false; });
+                };
+                setupTouch('mob-up', 'KeyW');
+                setupTouch('mob-down', 'KeyS');
+                setupTouch('mob-left', 'KeyA');
+                setupTouch('mob-right', 'KeyD');
+                setupTouch('mob-jump', 'Space');
+
+                document.getElementById('mob-cam').addEventListener('click', () => this.toggleCameraMode());
+                document.getElementById('mob-scent').addEventListener('click', () => this.togglePrimalSense());
+                document.getElementById('mob-roar').addEventListener('click', () => this.triggerApexRoar());
+            }
+
+            initUI() {
+                const bindRange = (id, valId, configKey, formatter = v => v, callback = null) => {
+                    const slider = document.getElementById(id);
+                    const label = document.getElementById(valId);
+                    if (!slider) return;
+                    slider.addEventListener('input', (e) => {
+                        const val = parseFloat(e.target.value);
+                        this.config[configKey] = val;
+                        if (label) label.textContent = formatter(val);
+                        if (callback) callback(val);
+                    });
+                };
+
+                bindRange('set-res', 'val-res', 'resolutionScale', v => `${Math.round(v * 100)}%`, v => {
+                    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2) * v);
+                });
+
+                bindRange('set-foliage', 'val-foliage', 'foliageDensity', v => `${Math.round(v * 100)}%`, () => {
+                    this.applyFoliageDensity();
+                });
+
+                bindRange('set-bloom', 'val-bloom', 'bloomStrength', v => v.toFixed(2), v => {
+                    if (this.bloomPass) this.bloomPass.strength = v;
+                });
+
+                bindRange('set-env', 'val-env', 'envMapIntensity', v => v.toFixed(1), v => {
+                    this.scene.environmentIntensity = v;
+                });
+
+                bindRange('set-fog', 'val-fog', 'fogDensity', v => v.toFixed(3), v => {
+                    this.scene.fog.density = v;
+                    if (this.waterUniforms) this.waterUniforms.uFogDensity.value = v;
+                });
+
+                bindRange('set-time', null, 'timeOfDay', () => '', () => {
+                    this.config.autoCycle = false;
+                    document.getElementById('set-autocycle').checked = false;
+                });
+
+                bindRange('set-exposure', 'val-exposure', 'exposure', v => v.toFixed(2), v => {
+                    this.renderer.toneMappingExposure = v;
+                });
+
+                document.getElementById('set-autocycle').addEventListener('change', (e) => {
+                    this.config.autoCycle = e.target.checked;
+                });
+
+                document.getElementById('set-cam-mode').addEventListener('change', (e) => {
+                    this.setCameraMode(e.target.value);
+                });
+
+                document.getElementById('set-water').addEventListener('change', (e) => {
+                    this.config.waterQuality = e.target.value;
+                    if (this.waterUniforms) {
+                        this.waterUniforms.uQuality.value = e.target.value === 'high' ? 1.0 : 0.0;
+                    }
+                });
+
+                document.getElementById('set-shadows').addEventListener('change', (e) => {
+                    const size = parseInt(e.target.value);
+                    this.config.shadowMapSize = size;
+                    if (size === 0) {
+                        this.sunLight.castShadow = false;
+                    } else {
+                        this.sunLight.castShadow = true;
+                        this.sunLight.shadow.mapSize.width = size;
+                        this.sunLight.shadow.mapSize.height = size;
+                        this.sunLight.shadow.map?.dispose();
+                        this.sunLight.shadow.map = null;
+                    }
+                });
+
+                // Quality Presets: LOW, MEDIUM, HIGH, ULTRA
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const preset = e.target.getAttribute('data-preset');
+                        if (preset === 'low') {
+                            this.config.resolutionScale = 0.75;
+                            this.config.foliageDensity = 0.35;
+                            this.config.shadowMapSize = 0;
+                            this.config.bloomStrength = 0.15;
+                            this.config.waterQuality = 'low';
+                        } else if (preset === 'medium') {
+                            this.config.resolutionScale = 0.9;
+                            this.config.foliageDensity = 0.65;
+                            this.config.shadowMapSize = 1024;
+                            this.config.bloomStrength = 0.30;
+                            this.config.waterQuality = 'high';
+                        } else if (preset === 'high') {
+                            this.config.resolutionScale = 1.0;
+                            this.config.foliageDensity = 0.85;
+                            this.config.shadowMapSize = 2048;
+                            this.config.bloomStrength = 0.42;
+                            this.config.waterQuality = 'high';
+                        } else if (preset === 'ultra') {
+                            this.config.resolutionScale = 1.25;
+                            this.config.foliageDensity = 1.0;
+                            this.config.shadowMapSize = 4096;
+                            this.config.bloomStrength = 0.55;
+                            this.config.waterQuality = 'high';
+                        }
+
+                        document.getElementById('set-res').value = this.config.resolutionScale;
+                        document.getElementById('val-res').textContent = `${Math.round(this.config.resolutionScale * 100)}%`;
+                        document.getElementById('set-foliage').value = this.config.foliageDensity;
+                        document.getElementById('val-foliage').textContent = `${Math.round(this.config.foliageDensity * 100)}%`;
+                        document.getElementById('set-bloom').value = this.config.bloomStrength;
+                        document.getElementById('val-bloom').textContent = this.config.bloomStrength.toFixed(2);
+                        document.getElementById('set-water').value = this.config.waterQuality;
+                        document.getElementById('set-shadows').value = String(this.config.shadowMapSize);
+
+                        if (this.bloomPass) this.bloomPass.strength = this.config.bloomStrength;
+                        if (this.waterUniforms) this.waterUniforms.uQuality.value = this.config.waterQuality === 'high' ? 1.0 : 0.0;
+                        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2) * this.config.resolutionScale);
+                        this.applyFoliageDensity();
+
+                        if (this.config.shadowMapSize === 0) {
+                            this.sunLight.castShadow = false;
+                        } else {
+                            this.sunLight.castShadow = true;
+                            this.sunLight.shadow.mapSize.width = this.config.shadowMapSize;
+                            this.sunLight.shadow.mapSize.height = this.config.shadowMapSize;
+                            this.sunLight.shadow.map?.dispose();
+                            this.sunLight.shadow.map = null;
+                        }
+
+                        this.showToast(`Graphics Preset: ${preset.toUpperCase()}`);
+                    });
+                });
+            }
+
+            /**
+             * 11. Dynamic 24-Hour Solar, Sky, Fog & Water Lighting Cycle
+             */
+            updateDayNightCycle(dt) {
+                if (this.config.autoCycle && this.isPlaying) {
+                    this.config.timeOfDay = (this.config.timeOfDay + dt * 0.16) % 24;
+                    document.getElementById('set-time').value = this.config.timeOfDay.toFixed(1);
+                }
+
+                const t = this.config.timeOfDay;
+                const hours = Math.floor(t);
+                const mins = Math.floor((t - hours) * 60);
+                document.getElementById('hud-time').textContent =
+                    `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+
+                const sunAngle = ((t - 6) / 24) * Math.PI * 2;
+                const sunY = Math.sin(sunAngle);
+                const sunX = Math.cos(sunAngle) * 0.8;
+                const sunZ = 0.45;
+
+                const sunDir = new THREE.Vector3(sunX, sunY, sunZ).normalize();
+                this.sunLight.position.copy(this.dino.position).addScaledVector(sunDir, 75);
+                this.sunLight.target.position.copy(this.dino.position);
+                this.sunLight.target.updateMatrixWorld();
+
+                for (const u of this.sunUniforms) {
+                    u.value.copy(sunDir);
+                }
+                if (this.waterUniforms) {
+                    this.waterUniforms.uSunDir.value.copy(sunDir);
+                }
+
+                this.skyDome.material.uniforms.sunDirection.value.copy(sunDir);
+
+                const dayFactor = THREE.MathUtils.clamp((sunY + 0.15) / 0.65, 0, 1);
+                const sunsetFactor = Math.exp(-Math.pow((sunY - 0.05) * 5.0, 2));
+
+                const nightTop = new THREE.Color(0x050914);
+                const dayTop = new THREE.Color(0x1b4f8c);
+                const topCol = nightTop.clone().lerp(dayTop, dayFactor);
+
+                const nightBot = new THREE.Color(0x0c1424);
+                const dayBot = new THREE.Color(0xa6cde8);
+                const sunsetBot = new THREE.Color(0xe86c35);
+                const botCol = nightBot.clone().lerp(dayBot, dayFactor).lerp(sunsetBot, sunsetFactor * 0.85);
+
+                this.skyDome.material.uniforms.topColor.value.copy(topCol);
+                this.skyDome.material.uniforms.bottomColor.value.copy(botCol);
+                this.scene.fog.color.copy(botCol);
+
+                const sunDayCol = new THREE.Color(0xfff6e5);
+                const sunSetCol = new THREE.Color(0xff7e3b);
+                this.sunLight.color.copy(sunDayCol).lerp(sunSetCol, sunsetFactor);
+                this.sunLight.intensity = Math.max(0.08, dayFactor * 3.4);
+                this.hemiLight.intensity = (this.dino.scentActive ? 0.55 : 0.20) + dayFactor * 0.48;
+
+                if (this.waterUniforms) {
+                    this.waterUniforms.uSunColor.value.copy(this.sunLight.color);
+                    this.waterUniforms.uSkyColor.value.copy(botCol);
+                    this.waterUniforms.uFogColor.value.copy(botCol);
+                }
+
+                const timeIcon = document.getElementById('time-icon');
+                if (dayFactor > 0.25) {
+                    timeIcon.className = 'fas fa-sun text-amber-400';
+                } else {
+                    timeIcon.className = 'fas fa-moon text-sky-300';
+                }
+            }
+
+            /**
+             * 12. Playable Theropod Movement, Digitigrade Stride Kinematics, Roar & 'The Isle' Camera
+             */
+            updateTheropodAndCamera(dt) {
+                if (this.isPlaying) {
+                    const forward = new THREE.Vector3(-Math.sin(this.dino.camYaw), 0, -Math.cos(this.dino.camYaw));
+                    const right = new THREE.Vector3(Math.cos(this.dino.camYaw), 0, -Math.sin(this.dino.camYaw));
+
+                    const moveDir = new THREE.Vector3();
+                    if (this.keys['KeyW'] || this.keys['ArrowUp']) moveDir.add(forward);
+                    if (this.keys['KeyS'] || this.keys['ArrowDown']) moveDir.sub(forward);
+                    if (this.keys['KeyD'] || this.keys['ArrowRight']) moveDir.add(right);
+                    if (this.keys['KeyA'] || this.keys['ArrowLeft']) moveDir.sub(right);
+                    if (moveDir.lengthSq() > 0) moveDir.normalize();
+
+                    const wantsSprint = (this.keys['ShiftLeft'] || this.keys['ShiftRight']) && moveDir.lengthSq() > 0 && !this.dino.isCrouching;
+                    let targetSpeed = this.dino.isCrouching ? this.dino.crouchSpeed : this.dino.walkSpeed;
+
+                    if (wantsSprint && this.dino.stamina > 4) {
+                        targetSpeed = this.dino.sprintSpeed;
+                        this.dino.stamina = Math.max(0, this.dino.stamina - dt * 22);
+                    } else {
+                        this.dino.stamina = Math.min(100, this.dino.stamina + dt * 15);
+                    }
+
+                    // Dynamic FOV boost during sprint
+                    const desiredFov = wantsSprint ? this.config.fov + 8 : this.config.fov;
+                    if (Math.abs(this.camera.fov - desiredFov) > 0.05) {
+                        this.camera.fov = THREE.MathUtils.lerp(this.camera.fov, desiredFov, dt * 8);
+                        this.camera.updateProjectionMatrix();
+                    }
+
+                    // Subtle survival vitals drift
+                    this.dino.hunger = Math.max(0, this.dino.hunger - dt * 0.06);
+                    this.dino.thirst = Math.max(0, this.dino.thirst - dt * 0.09);
+
+                    // Replenish thirst when wading into the river/lake
+                    const terrainY = this.getTerrainHeight(this.dino.position.x, this.dino.position.z);
+                    if (terrainY < this.waterLevel + 0.15) {
+                        this.dino.thirst = Math.min(100, this.dino.thirst + dt * 12);
+                    }
+
+                    document.getElementById('hud-stamina-bar').style.width = `${this.dino.stamina}%`;
+                    document.getElementById('hud-stamina-text').textContent = `${Math.round(this.dino.stamina)}%`;
+                    document.getElementById('hud-hunger-bar').style.width = `${this.dino.hunger}%`;
+                    document.getElementById('hud-hunger-text').textContent = `${Math.round(this.dino.hunger)}%`;
+                    document.getElementById('hud-thirst-bar').style.width = `${this.dino.thirst}%`;
+                    document.getElementById('hud-thirst-text').textContent = `${Math.round(this.dino.thirst)}%`;
+
+                    // Smooth inertial velocity
+                    this.dino.velocity.x = THREE.MathUtils.lerp(this.dino.velocity.x, moveDir.x * targetSpeed, 10 * dt);
+                    this.dino.velocity.z = THREE.MathUtils.lerp(this.dino.velocity.z, targetSpeed * moveDir.z, 10 * dt);
+
+                    if (this.keys['Space'] && this.dino.isGrounded) {
+                        this.dino.velocity.y = this.dino.jumpForce;
+                        this.dino.isGrounded = false;
+                    }
+                    this.dino.velocity.y -= 21.0 * dt;
+
+                    this.dino.position.addScaledVector(this.dino.velocity, dt);
+
+                    const groundY = this.getTerrainHeight(this.dino.position.x, this.dino.position.z);
+                    if (this.dino.position.y <= groundY) {
+                        this.dino.position.y = groundY;
+                        this.dino.velocity.y = 0;
+                        this.dino.isGrounded = true;
+                    }
+                }
+
+                // Update Dino Root Position & Smooth Turn Alignment
+                this.dinoRoot.position.copy(this.dino.position);
+                const horizSpeed = Math.hypot(this.dino.velocity.x, this.dino.velocity.z);
+
+                if (horizSpeed > 0.35) {
+                    const moveAngle = Math.atan2(-this.dino.velocity.x, -this.dino.velocity.z);
+                    let diff = moveAngle - this.dino.bodyYaw;
+                    while (diff < -Math.PI) diff += Math.PI * 2;
+                    while (diff > Math.PI) diff -= Math.PI * 2;
+                    this.dino.bodyYaw += diff * Math.min(1, dt * 8.5);
+                } else if (this.config.cameraMode === 'fp') {
+                    this.dino.bodyYaw = this.dino.camYaw;
+                }
+                this.dinoRoot.rotation.y = this.dino.bodyYaw;
+
+                // Update Top Compass Heading
+                const deg = Math.round((((-this.dino.camYaw * 180 / Math.PI) % 360) + 360) % 360);
+                const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+                const cardinal = dirs[Math.round(deg / 45) % 8];
+                document.getElementById('compass-heading').textContent = `${cardinal} ${String(deg).padStart(3, '0')}°`;
+
+                // Articulated Digitigrade Stride, Crouch, Tail Sway & Roar Animation
+                const rig = this.theropodRig;
+                const crouchDrop = this.dino.isCrouching ? 0.32 : 0.0;
+                const strideFreq = horizSpeed > 0.4 ? (1.25 + horizSpeed * 0.45) : 0;
+
+                if (this.dino.isGrounded && horizSpeed > 0.4) {
+                    this.dino.strideTimer += dt * strideFreq * Math.PI;
+                    const sL = Math.sin(this.dino.strideTimer);
+                    const sR = Math.sin(this.dino.strideTimer + Math.PI);
+                    const amp = Math.min(0.75, 0.25 + horizSpeed * 0.045);
+
+                    // Left Hind Leg Kinematics
+                    rig.leftLeg.hip.rotation.x = sL * amp;
+                    rig.leftLeg.knee.rotation.x = Math.max(0, -sL) * amp * 0.95;
+                    rig.leftLeg.ankle.rotation.x = -Math.max(0, -sL) * amp * 0.65;
+
+                    // Right Hind Leg Kinematics
+                    rig.rightLeg.hip.rotation.x = sR * amp;
+                    rig.rightLeg.knee.rotation.x = Math.max(0, -sR) * amp * 0.95;
+                    rig.rightLeg.ankle.rotation.x = -Math.max(0, -sR) * amp * 0.65;
+
+                    // Pelvis vertical stride bounce & forward sprint pitch
+                    rig.pelvis.position.y = (this.dino.hipHeight - crouchDrop) + Math.abs(Math.cos(this.dino.strideTimer)) * 0.09;
+                    rig.torso.rotation.x = THREE.MathUtils.lerp(rig.torso.rotation.x, horizSpeed > 8 ? -0.18 : -0.06, dt * 8);
+                } else {
+                    rig.leftLeg.hip.rotation.x = THREE.MathUtils.lerp(rig.leftLeg.hip.rotation.x, this.dino.isCrouching ? 0.35 : 0, dt * 8);
+                    rig.rightLeg.hip.rotation.x = THREE.MathUtils.lerp(rig.rightLeg.hip.rotation.x, this.dino.isCrouching ? 0.35 : 0, dt * 8);
+                    rig.leftLeg.knee.rotation.x = THREE.MathUtils.lerp(rig.leftLeg.knee.rotation.x, this.dino.isCrouching ? 0.55 : 0, dt * 8);
+                    rig.rightLeg.knee.rotation.x = THREE.MathUtils.lerp(rig.rightLeg.knee.rotation.x, this.dino.isCrouching ? 0.55 : 0, dt * 8);
+                    rig.leftLeg.ankle.rotation.x = THREE.MathUtils.lerp(rig.leftLeg.ankle.rotation.x, this.dino.isCrouching ? -0.25 : 0, dt * 8);
+                    rig.rightLeg.ankle.rotation.x = THREE.MathUtils.lerp(rig.rightLeg.ankle.rotation.x, this.dino.isCrouching ? -0.25 : 0, dt * 8);
+
+                    const breathe = Math.sin(this.elapsedTime * 2.2) * 0.025;
+                    rig.pelvis.position.y = (this.dino.hipHeight - crouchDrop) + breathe;
+                    rig.torso.rotation.x = THREE.MathUtils.lerp(rig.torso.rotation.x, this.dino.isCrouching ? -0.15 : 0, dt * 8);
+                }
+
+                // Multi-Segment Tail Counter-Balance Sway
+                rig.tailSegments.forEach((seg, idx) => {
+                    const phase = this.elapsedTime * (2.2 + horizSpeed * 0.5) - idx * 0.45;
+                    seg.rotation.y = Math.sin(phase) * (0.06 + idx * 0.025);
+                    seg.rotation.x = Math.cos(phase * 0.5) * 0.025 + (horizSpeed > 8 ? 0.03 : 0);
+                });
+
+                // Roar Jaw Open & Head Rear Animation
+                let roarShake = 0;
+                if (this.dino.roarTimer > 0) {
+                    this.dino.roarTimer = Math.max(0, this.dino.roarTimer - dt);
+                    const roarCurve = Math.sin((1.45 - this.dino.roarTimer) / 1.45 * Math.PI);
+                    rig.lowerJaw.rotation.x = roarCurve * 0.62;
+                    rig.neck.rotation.x = roarCurve * 0.28;
+                    rig.head.rotation.x = roarCurve * 0.22;
+                    roarShake = roarCurve * 0.06 * Math.sin(this.elapsedTime * 48);
+                } else {
+                    rig.lowerJaw.rotation.x = THREE.MathUtils.lerp(rig.lowerJaw.rotation.x, 0.04, dt * 10);
+                    rig.neck.rotation.x = THREE.MathUtils.lerp(rig.neck.rotation.x, 0, dt * 8);
+                    rig.head.rotation.x = THREE.MathUtils.lerp(rig.head.rotation.x, 0, dt * 8);
+                }
+
+                // Primal Sense Light tracking
+                this.primalSenseLight.position.set(this.dino.position.x, this.dino.position.y + 3.0, this.dino.position.z);
+
+                // Camera Positioning ('The Isle' Third-Person Orbital vs First-Person Snout)
+                if (this.config.cameraMode === 'tp') {
+                    const pivot = new THREE.Vector3(
+                        this.dino.position.x,
+                        this.dino.position.y + (this.dino.isCrouching ? 1.45 : 1.85),
+                        this.dino.position.z
+                    );
+                    const dist = 5.6;
+                    const offset = new THREE.Vector3(
+                        Math.sin(this.dino.camYaw) * Math.cos(this.dino.camPitch) * dist,
+                        Math.sin(this.dino.camPitch) * dist + 0.55,
+                        Math.cos(this.dino.camYaw) * Math.cos(this.dino.camPitch) * dist
+                    );
+                    // Slight over-hip offset for cinematic 'The Isle' framing
+                    const rightHip = new THREE.Vector3(Math.cos(this.dino.camYaw), 0, -Math.sin(this.dino.camYaw)).multiplyScalar(0.55);
+                    const desiredPos = pivot.clone().add(offset).add(rightHip);
+
+                    // Prevent camera from clipping below terrain or water surface
+                    const minGround = Math.max(this.getTerrainHeight(desiredPos.x, desiredPos.z), this.waterLevel) + 0.45;
+                    if (desiredPos.y < minGround) desiredPos.y = minGround;
+
+                    this.dino.tpCamPos.lerp(desiredPos, Math.min(1, dt * 14));
+                    this.camera.position.copy(this.dino.tpCamPos);
+                    this.camera.position.y += roarShake;
+
+                    const lookAhead = new THREE.Vector3(-Math.sin(this.dino.camYaw), -Math.sin(this.dino.camPitch) * 0.4, -Math.cos(this.dino.camYaw)).multiplyScalar(4.0);
+                    this.camera.lookAt(pivot.clone().add(lookAhead));
+                } else {
+                    const eyeHeight = this.dino.position.y + (this.dino.isCrouching ? 1.55 : 2.15);
+                    const forwardOffset = new THREE.Vector3(-Math.sin(this.dino.camYaw), 0, -Math.cos(this.dino.camYaw)).multiplyScalar(1.35);
+                    this.camera.position.set(
+                        this.dino.position.x + forwardOffset.x,
+                        eyeHeight + roarShake,
+                        this.dino.position.z + forwardOffset.z
+                    );
+                    const euler = new THREE.Euler(-this.dino.camPitch, this.dino.camYaw, 0, 'YXZ');
+                    this.camera.quaternion.setFromEuler(euler);
+                }
+            }
+
+            /**
+             * 13. Living NPC Dinosaur Herd AI & Animation
+             */
+            updateNPCHerds(dt) {
+                for (const npc of this.npcHerds) {
+                    npc.turnTimer -= dt;
+                    if (npc.turnTimer <= 0) {
+                        npc.turnTimer = 3.0 + Math.random() * 5.0;
+                        // Steer gently back toward home grazing area if too far
+                        const dxHome = npc.homeX - npc.root.position.x;
+                        const dzHome = npc.homeZ - npc.root.position.z;
+                        if (Math.hypot(dxHome, dzHome) > 28) {
+                            npc.targetHeading = Math.atan2(-dxHome, -dzHome) + (Math.random() - 0.5) * 0.6;
+                        } else {
+                            npc.targetHeading = npc.heading + (Math.random() - 0.5) * 1.8;
+                        }
+                    }
+
+                    // Avoid deep water
+                    const aheadX = npc.root.position.x - Math.sin(npc.heading) * 4.5;
+                    const aheadZ = npc.root.position.z - Math.cos(npc.heading) * 4.5;
+                    if (this.getTerrainHeight(aheadX, aheadZ) < this.waterLevel + 0.15) {
+                        npc.targetHeading += Math.PI * 0.65;
+                    }
+
+                    let diff = npc.targetHeading - npc.heading;
+                    while (diff < -Math.PI) diff += Math.PI * 2;
+                    while (diff > Math.PI) diff -= Math.PI * 2;
+                    npc.heading += diff * Math.min(1, dt * 1.5);
+
+                    npc.root.rotation.y = npc.heading;
+                    npc.root.position.x -= Math.sin(npc.heading) * npc.speed * dt;
+                    npc.root.position.z -= Math.cos(npc.heading) * npc.speed * dt;
+                    npc.root.position.y = this.getTerrainHeight(npc.root.position.x, npc.root.position.z);
+
+                    // Quadruped gait & tail/neck sway
+                    npc.stridePhase += dt * npc.speed * 2.4;
+                    const swing = Math.sin(npc.stridePhase) * 0.32;
+                    npc.rig.legs[0].rotation.x = swing;
+                    npc.rig.legs[1].rotation.x = -swing;
+                    npc.rig.legs[2].rotation.x = -swing;
+                    npc.rig.legs[3].rotation.x = swing;
+                    npc.rig.tail.rotation.y = Math.sin(npc.stridePhase * 0.8) * 0.16;
+
+                    if (npc.species === 'brachiosaurus' && npc.rig.neckPivot) {
+                        npc.rig.neckPivot.rotation.x = Math.sin(this.elapsedTime * 0.9 + npc.stridePhase) * 0.06;
+                    } else if (npc.species === 'triceratops' && npc.rig.headGroup) {
+                        npc.rig.headGroup.rotation.y = Math.sin(this.elapsedTime * 1.1 + npc.stridePhase) * 0.12;
+                    }
+                }
+            }
+
+            /**
+             * 14. Roar Acoustic Rings & Physics Meat Chunks
+             */
+            updateEffectsAndPhysics(dt) {
+                // Expanding Roar Shockwave Rings
+                for (let i = this.roarWaves.length - 1; i >= 0; i--) {
+                    const rw = this.roarWaves[i];
+                    rw.age += dt;
+                    const scale = 1.0 + rw.age * 28.0;
+                    rw.mesh.scale.set(scale, scale, 1);
+                    rw.mesh.material.opacity = Math.max(0, 0.75 * (1.0 - rw.age / 1.1));
+                    if (rw.age >= 1.1) {
+                        this.scene.remove(rw.mesh);
+                        rw.mesh.geometry.dispose();
+                        rw.mesh.material.dispose();
+                        this.roarWaves.splice(i, 1);
+                    }
+                }
+
+                // Physics Meat Chunks (can be eaten by walking close)
+                for (let i = this.physicsChunks.length - 1; i >= 0; i--) {
+                    const chunk = this.physicsChunks[i];
+                    chunk.velocity.y -= 18.0 * dt;
+                    chunk.mesh.position.addScaledVector(chunk.velocity, dt);
+
+                    const floorY = this.getTerrainHeight(chunk.mesh.position.x, chunk.mesh.position.z);
+                    if (chunk.mesh.position.y - chunk.radius <= floorY) {
+                        chunk.mesh.position.y = floorY + chunk.radius;
+                        chunk.velocity.y = 0;
+                        chunk.velocity.x *= Math.pow(0.1, dt);
+                        chunk.velocity.z *= Math.pow(0.1, dt);
+                    }
+
+                    // Feed Theropod if close
+                    if (chunk.mesh.position.distanceTo(this.dino.position) < 2.3 && chunk.velocity.length() < 0.5) {
+                        this.dino.hunger = Math.min(100, this.dino.hunger + 18);
+                        this.scene.remove(chunk.mesh);
+                        chunk.mesh.geometry.dispose();
+                        chunk.mesh.material.dispose();
+                        this.physicsChunks.splice(i, 1);
+                        this.showToast('Fed on Meat (+18% Hunger)');
+                    }
+                }
+            }
+
+            animate() {
+                requestAnimationFrame(this.animate);
+
+                const dt = Math.min(this.clock.getDelta(), 0.05);
+                this.elapsedTime += dt;
+
+                for (const u of this.windUniforms) {
+                    u.value = this.elapsedTime;
+                }
+                if (this.waterUniforms) {
+                    this.waterUniforms.uTime.value = this.elapsedTime;
+                }
+
+                this.updateDayNightCycle(dt);
+                this.updateTheropodAndCamera(dt);
+                this.updateNPCHerds(dt);
+                this.updateEffectsAndPhysics(dt);
+
+                this.composer.render();
+
+                this.frames++;
+                const now = performance.now();
+                if (now - this.lastFpsUpdate >= 400) {
+                    const fps = Math.round((this.frames * 1000) / (now - this.lastFpsUpdate));
+                    const ms = (1000 / Math.max(1, fps)).toFixed(1);
+                    const fpsEl = document.getElementById('hud-fps');
+                    fpsEl.textContent = fps;
+                    fpsEl.className = fps >= 50 ? 'text-emerald-400 font-bold' : (fps >= 30 ? 'text-amber-400 font-bold' : 'text-rose-400 font-bold');
+                    document.getElementById('hud-ms').textContent = ms;
+                    this.frames = 0;
+                    this.lastFpsUpdate = now;
+                }
+            }
+        }
+
+        window.onload = () => {
+            window.islaEngine = new IslaPrimordialEngine();
+        };
+    </script>
 </body>
 </html>
