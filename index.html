@@ -450,6 +450,135 @@
          * - Custom GLSL Fresnel / Beer-Lambert Absorption / Caustics / Shoreline Foam Water
          * - All 5 Reference Botanical Tree Archetypes + Prehistoric Ferns + Meadow Grass
          */
+        // AAA Quality Procedural PBR T-Rex Model & Skeleton (Rig) Engine
+        class HighEndTRexEngine {
+            constructor(scene) {
+                this.scene = scene;
+                this.tRexGroup = new THREE.Group();
+                this.scene.add(this.tRexGroup);
+
+                this.buildTRexModel();
+            }
+
+            buildTRexModel() {
+                const skinMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x3b4232,
+                    roughness: 0.65,
+                    metalness: 0.1,
+                    bumpScale: 0.04
+                });
+
+                const scalePlateMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x1c1f19,
+                    roughness: 0.5,
+                    metalness: 0.2
+                });
+
+                const toothMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xf4efe2,
+                    roughness: 0.25
+                });
+
+                const eyeMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xffb703,
+                    emissive: 0xf59e0b,
+                    emissiveIntensity: 0.7
+                });
+
+                const pelvis = new THREE.Group();
+                pelvis.position.y = 2.2;
+                this.tRexGroup.add(pelvis);
+
+                const torsoGeo = new THREE.CapsuleGeometry(0.65, 1.8, 12, 16);
+                torsoGeo.rotateX(Math.PI / 2);
+                const torso = new THREE.Mesh(torsoGeo, skinMaterial);
+                torso.castShadow = true;
+                torso.receiveShadow = true;
+                pelvis.add(torso);
+
+                for (let i = 0; i < 6; i++) {
+                    const plate = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.22, 5), scalePlateMaterial);
+                    plate.position.set(0, 0.75, 0.6 - i * 0.3);
+                    plate.rotation.x = -0.3;
+                    torso.add(plate);
+                }
+
+                const neck = new THREE.Group();
+                neck.position.set(0, 0.3, -1.1);
+                pelvis.add(neck);
+
+                const head = new THREE.Group();
+                head.position.set(0, 0.8, -0.6);
+                neck.add(head);
+
+                const cranium = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.38, 0.75), skinMaterial);
+                cranium.castShadow = true;
+                head.add(cranium);
+
+                for (const side of [-1, 1]) {
+                    const eye = new THREE.Mesh(new THREE.SphereGeometry(0.04, 10, 10), eyeMaterial);
+                    eye.position.set(side * 0.22, 0.08, -0.2);
+                    head.add(eye);
+                }
+
+                const lowerJaw = new THREE.Group();
+                lowerJaw.position.set(0, -0.12, -0.15);
+                head.add(lowerJaw);
+
+                const jawMesh = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.16, 0.65), skinMaterial);
+                jawMesh.position.set(0, 0, -0.2);
+                lowerJaw.add(jawMesh);
+
+                for (let t = 0; t < 5; t++) {
+                    for (const side of [-1, 1]) {
+                        const upperTooth = new THREE.Mesh(new THREE.ConeGeometry(0.015, 0.07, 4), toothMaterial);
+                        upperTooth.position.set(side * 0.18, -0.2, -0.1 - t * 0.1);
+                        upperTooth.rotation.x = Math.PI;
+                        head.add(upperTooth);
+                    }
+                }
+
+                const buildLeg = (side) => {
+                    const hip = new THREE.Group();
+                    hip.position.set(side * 0.45, -0.2, 0.1);
+                    pelvis.add(hip);
+
+                    const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.18, 1.2, 10), skinMaterial);
+                    thigh.position.set(0, -0.6, -0.1);
+                    thigh.castShadow = true;
+                    hip.add(thigh);
+
+                    const shin = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.11, 1.1, 10), skinMaterial);
+                    shin.position.set(0, -1.6, 0.15);
+                    shin.castShadow = true;
+                    hip.add(shin);
+
+                    return hip;
+                };
+
+                this.leftLeg = buildLeg(-1);
+                this.rightLeg = buildLeg(1);
+
+                const tail = new THREE.Group();
+                tail.position.set(0, 0.2, 1.1);
+                pelvis.add(tail);
+
+                const tailMesh = new THREE.Mesh(new THREE.ConeGeometry(0.35, 2.5, 10), skinMaterial);
+                tailMesh.rotation.x = Math.PI * 0.55;
+                tailMesh.position.set(0, -0.2, 1.2);
+                tailMesh.castShadow = true;
+                tail.add(tailMesh);
+
+                this.rig = { pelvis, neck, head, lowerJaw, tail, torso };
+            }
+
+            update(time) {
+                this.rig.pelvis.position.y = 2.2 + Math.sin(time * 3) * 0.04;
+                this.rig.tail.rotation.y = Math.sin(time * 2) * 0.08;
+                this.rig.lowerJaw.rotation.x = 0.1 + Math.sin(time * 4) * 0.15;
+            }
+        }
+
         class IslaPrimordialEngine {
             constructor() {
                 this.container = document.getElementById('canvas-container');
@@ -483,7 +612,7 @@
                     camYaw: 0.15,
                     camPitch: 0.18,
                     bodyYaw: 0.15,
-                    hipHeight: 1.48,
+                    hipHeight: 2.2,
                     walkSpeed: 5.8,
                     sprintSpeed: 12.6,
                     crouchSpeed: 3.1,
@@ -515,7 +644,9 @@
                 this.initSceneAndEnvironment();
                 this.generateProceduralTextures();
                 this.buildTerrainAndWater();
-                this.buildPlayableTheropod();
+                this.trexEngine = new HighEndTRexEngine(this.scene);
+                this.dinoRoot = this.trexEngine.tRexGroup;
+                this.theropodRig = this.trexEngine.rig;
                 this.spawnDinosaurHerds();
                 this.generateBotanicalTrees();
                 this.generatePrehistoricFloraAndRocks();
@@ -2954,63 +3085,22 @@
                 const cardinal = dirs[Math.round(deg / 45) % 8];
                 document.getElementById('compass-heading').textContent = `${cardinal} ${String(deg).padStart(3, '0')}°`;
 
-                // Articulated Digitigrade Stride, Crouch, Tail Sway & Roar Animation
+                // AAA T-Rex Rig Animation + Roar
                 const rig = this.theropodRig;
-                const crouchDrop = this.dino.isCrouching ? 0.32 : 0.0;
-                const strideFreq = horizSpeed > 0.4 ? (1.25 + horizSpeed * 0.45) : 0;
-
-                if (this.dino.isGrounded && horizSpeed > 0.4) {
-                    this.dino.strideTimer += dt * strideFreq * Math.PI;
-                    const sL = Math.sin(this.dino.strideTimer);
-                    const sR = Math.sin(this.dino.strideTimer + Math.PI);
-                    const amp = Math.min(0.75, 0.25 + horizSpeed * 0.045);
-
-                    // Left Hind Leg Kinematics
-                    rig.leftLeg.hip.rotation.x = sL * amp;
-                    rig.leftLeg.knee.rotation.x = Math.max(0, -sL) * amp * 0.95;
-                    rig.leftLeg.ankle.rotation.x = -Math.max(0, -sL) * amp * 0.65;
-
-                    // Right Hind Leg Kinematics
-                    rig.rightLeg.hip.rotation.x = sR * amp;
-                    rig.rightLeg.knee.rotation.x = Math.max(0, -sR) * amp * 0.95;
-                    rig.rightLeg.ankle.rotation.x = -Math.max(0, -sR) * amp * 0.65;
-
-                    // Pelvis vertical stride bounce & forward sprint pitch
-                    rig.pelvis.position.y = (this.dino.hipHeight - crouchDrop) + Math.abs(Math.cos(this.dino.strideTimer)) * 0.09;
-                    rig.torso.rotation.x = THREE.MathUtils.lerp(rig.torso.rotation.x, horizSpeed > 8 ? -0.18 : -0.06, dt * 8);
-                } else {
-                    rig.leftLeg.hip.rotation.x = THREE.MathUtils.lerp(rig.leftLeg.hip.rotation.x, this.dino.isCrouching ? 0.35 : 0, dt * 8);
-                    rig.rightLeg.hip.rotation.x = THREE.MathUtils.lerp(rig.rightLeg.hip.rotation.x, this.dino.isCrouching ? 0.35 : 0, dt * 8);
-                    rig.leftLeg.knee.rotation.x = THREE.MathUtils.lerp(rig.leftLeg.knee.rotation.x, this.dino.isCrouching ? 0.55 : 0, dt * 8);
-                    rig.rightLeg.knee.rotation.x = THREE.MathUtils.lerp(rig.rightLeg.knee.rotation.x, this.dino.isCrouching ? 0.55 : 0, dt * 8);
-                    rig.leftLeg.ankle.rotation.x = THREE.MathUtils.lerp(rig.leftLeg.ankle.rotation.x, this.dino.isCrouching ? -0.25 : 0, dt * 8);
-                    rig.rightLeg.ankle.rotation.x = THREE.MathUtils.lerp(rig.rightLeg.ankle.rotation.x, this.dino.isCrouching ? -0.25 : 0, dt * 8);
-
-                    const breathe = Math.sin(this.elapsedTime * 2.2) * 0.025;
-                    rig.pelvis.position.y = (this.dino.hipHeight - crouchDrop) + breathe;
-                    rig.torso.rotation.x = THREE.MathUtils.lerp(rig.torso.rotation.x, this.dino.isCrouching ? -0.15 : 0, dt * 8);
-                }
-
-                // Multi-Segment Tail Counter-Balance Sway
-                rig.tailSegments.forEach((seg, idx) => {
-                    const phase = this.elapsedTime * (2.2 + horizSpeed * 0.5) - idx * 0.45;
-                    seg.rotation.y = Math.sin(phase) * (0.06 + idx * 0.025);
-                    seg.rotation.x = Math.cos(phase * 0.5) * 0.025 + (horizSpeed > 8 ? 0.03 : 0);
-                });
-
-                // Roar Jaw Open & Head Rear Animation
                 let roarShake = 0;
+                if (this.trexEngine) this.trexEngine.update(this.elapsedTime);
+
                 if (this.dino.roarTimer > 0) {
                     this.dino.roarTimer = Math.max(0, this.dino.roarTimer - dt);
                     const roarCurve = Math.sin((1.45 - this.dino.roarTimer) / 1.45 * Math.PI);
-                    rig.lowerJaw.rotation.x = roarCurve * 0.62;
-                    rig.neck.rotation.x = roarCurve * 0.28;
-                    rig.head.rotation.x = roarCurve * 0.22;
+                    if (rig.lowerJaw) rig.lowerJaw.rotation.x = 0.1 + roarCurve * 0.62;
+                    if (rig.neck) rig.neck.rotation.x = roarCurve * 0.28;
+                    if (rig.head) rig.head.rotation.x = roarCurve * 0.22;
                     roarShake = roarCurve * 0.06 * Math.sin(this.elapsedTime * 48);
-                } else {
-                    rig.lowerJaw.rotation.x = THREE.MathUtils.lerp(rig.lowerJaw.rotation.x, 0.04, dt * 10);
-                    rig.neck.rotation.x = THREE.MathUtils.lerp(rig.neck.rotation.x, 0, dt * 8);
-                    rig.head.rotation.x = THREE.MathUtils.lerp(rig.head.rotation.x, 0, dt * 8);
+                } else if (rig.lowerJaw) {
+                    rig.lowerJaw.rotation.x = THREE.MathUtils.lerp(rig.lowerJaw.rotation.x, 0.1, dt * 10);
+                    if (rig.neck) rig.neck.rotation.x = THREE.MathUtils.lerp(rig.neck.rotation.x, 0, dt * 8);
+                    if (rig.head) rig.head.rotation.x = THREE.MathUtils.lerp(rig.head.rotation.x, 0, dt * 8);
                 }
 
                 // Primal Sense Light tracking
@@ -3020,7 +3110,7 @@
                 if (this.config.cameraMode === 'tp') {
                     const pivot = new THREE.Vector3(
                         this.dino.position.x,
-                        this.dino.position.y + (this.dino.isCrouching ? 1.45 : 1.85),
+                        this.dino.position.y + (this.dino.isCrouching ? 2.0 : 2.6),
                         this.dino.position.z
                     );
                     const dist = 5.6;
@@ -3044,7 +3134,7 @@
                     const lookAhead = new THREE.Vector3(-Math.sin(this.dino.camYaw), -Math.sin(this.dino.camPitch) * 0.4, -Math.cos(this.dino.camYaw)).multiplyScalar(4.0);
                     this.camera.lookAt(pivot.clone().add(lookAhead));
                 } else {
-                    const eyeHeight = this.dino.position.y + (this.dino.isCrouching ? 1.55 : 2.15);
+                    const eyeHeight = this.dino.position.y + (this.dino.isCrouching ? 2.0 : 2.6);
                     const forwardOffset = new THREE.Vector3(-Math.sin(this.dino.camYaw), 0, -Math.cos(this.dino.camYaw)).multiplyScalar(1.35);
                     this.camera.position.set(
                         this.dino.position.x + forwardOffset.x,
