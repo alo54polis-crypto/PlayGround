@@ -178,10 +178,10 @@
             <div>
                 <div class="flex justify-between text-[10px] uppercase tracking-wider text-stone-400 mb-1">
                     <span class="flex items-center gap-1.5"><i class="fas fa-heart text-rose-500"></i> Vital Health</span>
-                    <span class="mono text-rose-400 font-bold">100%</span>
+                    <span id="hud-health-text" class="mono text-rose-400 font-bold">100%</span>
                 </div>
                 <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-rose-600 to-red-400 w-full rounded-full"></div>
+                    <div id="hud-health-bar" class="h-full bg-gradient-to-r from-rose-600 to-red-400 w-full rounded-full transition-all duration-150"></div>
                 </div>
             </div>
             <!-- Stamina -->
@@ -620,8 +620,10 @@
                     isGrounded: false,
                     isCrouching: false,
                     stamina: 100,
+                    health: 100,
                     hunger: 88,
                     thirst: 92,
+                    survivalWarnings: { hunger: false, thirst: false },
                     strideTimer: 0,
                     roarTimer: 0,
                     scentActive: false,
@@ -2612,6 +2614,14 @@
                 if (this.dino.roarTimer > 0.4) return;
                 this.dino.roarTimer = 1.45;
                 this.showToast('APEX BROADCAST ROAR');
+                for (const npc of this.npcHerds) {
+                    const awayX = npc.root.position.x - this.dino.position.x;
+                    const awayZ = npc.root.position.z - this.dino.position.z;
+                    if (Math.hypot(awayX, awayZ) < 42) {
+                        npc.targetHeading = Math.atan2(-awayX, -awayZ);
+                        npc.turnTimer = 1.8;
+                    }
+                }
 
                 // Expanding Acoustic Shockwave Ring
                 const ringGeo = new THREE.RingGeometry(0.6, 1.15, 36);
@@ -2715,10 +2725,14 @@
 
                 resumeBtn.addEventListener('click', () => {
                     overlay.style.opacity = '0';
-                    setTimeout(() => overlay.style.display = 'none', 300);
+                    setTimeout(() => {
+                        if (this.isPlaying) overlay.style.display = 'none';
+                    }, 300);
                     this.isPlaying = true;
                     document.getElementById('crosshair').style.opacity = '1';
-                    this.renderer.domElement.requestPointerLock();
+                    if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                        this.renderer.domElement.requestPointerLock();
+                    }
                 });
 
                 settingsBtn.addEventListener('click', () => {
@@ -2733,6 +2747,8 @@
 
                 window.addEventListener('keydown', (e) => {
                     this.keys[e.code] = true;
+                    if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
+                    if (e.repeat) return;
 
                     if (e.code === 'KeyV' && this.isPlaying) this.toggleCameraMode();
                     if (e.code === 'KeyF' && this.isPlaying) this.togglePrimalSense();
@@ -2753,6 +2769,17 @@
 
                 window.addEventListener('keyup', (e) => {
                     this.keys[e.code] = false;
+                });
+                window.addEventListener('blur', () => {
+                    this.keys = {};
+                });
+                document.addEventListener('pointerlockchange', () => {
+                    if (!document.pointerLockElement && this.isPlaying) {
+                        this.isPlaying = false;
+                        overlay.style.display = 'flex';
+                        requestAnimationFrame(() => { overlay.style.opacity = '1'; });
+                        document.getElementById('crosshair').style.opacity = '0';
+                    }
                 });
 
                 window.addEventListener('mousemove', (e) => {
@@ -3012,12 +3039,14 @@
 
                     const wantsSprint = (this.keys['ShiftLeft'] || this.keys['ShiftRight']) && moveDir.lengthSq() > 0 && !this.dino.isCrouching;
                     let targetSpeed = this.dino.isCrouching ? this.dino.crouchSpeed : this.dino.walkSpeed;
-
                     if (wantsSprint && this.dino.stamina > 4) {
                         targetSpeed = this.dino.sprintSpeed;
                         this.dino.stamina = Math.max(0, this.dino.stamina - dt * 22);
                     } else {
                         this.dino.stamina = Math.min(100, this.dino.stamina + dt * 15);
+                    }
+                    if (this.dino.health < 25 || this.dino.hunger < 15 || this.dino.thirst < 15) {
+                        targetSpeed *= 0.72;
                     }
 
                     // Dynamic FOV boost during sprint
@@ -3027,16 +3056,41 @@
                         this.camera.updateProjectionMatrix();
                     }
 
-                    // Subtle survival vitals drift
-                    this.dino.hunger = Math.max(0, this.dino.hunger - dt * 0.06);
-                    this.dino.thirst = Math.max(0, this.dino.thirst - dt * 0.09);
-
                     // Replenish thirst when wading into the river/lake
                     const terrainY = this.getTerrainHeight(this.dino.position.x, this.dino.position.z);
                     if (terrainY < this.waterLevel + 0.15) {
                         this.dino.thirst = Math.min(100, this.dino.thirst + dt * 12);
                     }
 
+                    const hungerDrain = this.dino.isCrouching ? 0.035 : (wantsSprint ? 0.11 : 0.06);
+                    const thirstDrain = wantsSprint ? 0.17 : 0.09;
+                    this.dino.hunger = Math.max(0, this.dino.hunger - dt * hungerDrain);
+                    this.dino.thirst = Math.max(0, this.dino.thirst - dt * thirstDrain);
+                    const starvation = this.dino.hunger <= 0;
+                    const dehydration = this.dino.thirst <= 0;
+                    if (starvation || dehydration) {
+                        this.dino.health = Math.max(0, this.dino.health - dt * (starvation && dehydration ? 1.2 : 0.6));
+                    } else {
+                        this.dino.health = Math.min(100, this.dino.health + dt * 0.035);
+                    }
+
+                    if (this.dino.hunger < 20 && !this.dino.survivalWarnings.hunger) {
+                        this.dino.survivalWarnings.hunger = true;
+                        this.showToast('Hunger critical — find or drop meat [G]');
+                    } else if (this.dino.hunger >= 25) {
+                        this.dino.survivalWarnings.hunger = false;
+                    }
+                    if (this.dino.thirst < 20 && !this.dino.survivalWarnings.thirst) {
+                        this.dino.survivalWarnings.thirst = true;
+                        this.showToast('Thirst critical — seek the river');
+                    } else if (this.dino.thirst >= 25) {
+                        this.dino.survivalWarnings.thirst = false;
+                    }
+
+                    const healthBar = document.getElementById('hud-health-bar');
+                    healthBar.style.width = `${this.dino.health}%`;
+                    healthBar.className = `h-full rounded-full transition-all duration-150 ${this.dino.health < 25 ? 'bg-gradient-to-r from-red-800 to-red-500' : 'bg-gradient-to-r from-rose-600 to-red-400'}`;
+                    document.getElementById('hud-health-text').textContent = `${Math.round(this.dino.health)}%`;
                     document.getElementById('hud-stamina-bar').style.width = `${this.dino.stamina}%`;
                     document.getElementById('hud-stamina-text').textContent = `${Math.round(this.dino.stamina)}%`;
                     document.getElementById('hud-hunger-bar').style.width = `${this.dino.hunger}%`;
