@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Euro Haul: Dağ Nakliyat</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#86b5cc;font-family:Inter,Arial,sans-serif;touch-action:none;-webkit-user-select:none;user-select:none}canvas{display:block;width:100%;height:100%}.hud{position:absolute;inset:0;pointer-events:none}.topbar{position:absolute;left:20px;right:20px;top:14px;display:flex;justify-content:space-between;color:white;text-shadow:0 2px 4px #000}.brand{font-weight:900;font-size:18px;letter-spacing:.5px}.brand small{display:block;font-size:10px;opacity:.75}.stats{display:flex;gap:8px}.pill{background:rgba(12,25,34,.78);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:8px 12px;font-weight:800;font-size:13px;backdrop-filter:blur(8px)}.pill span{color:#ffcf42}.mission{position:absolute;left:20px;top:72px;width:230px;background:rgba(12,25,34,.82);color:white;border-radius:14px;padding:12px 14px;border-left:4px solid #ffc934}.mission b{font-size:12px}.mission div{font-size:11px;margin-top:5px;color:#d8e5eb}.progress{height:5px;background:#314551;border-radius:5px;margin-top:8px;overflow:hidden}.progress i{display:block;height:100%;width:0;background:#ffc934}.controls{position:absolute;left:18px;right:18px;bottom:18px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none}.leftControls,.rightControls{display:flex;align-items:flex-end;gap:10px}.pedal{pointer-events:auto;border:2px solid rgba(255,255,255,.15);border-radius:16px;width:74px;height:74px;color:white;font-weight:900;background:rgba(18,35,44,.78);box-shadow:0 6px 18px #0005;display:grid;place-items:center}.pedal:active,.pedal.on{transform:scale(.96);background:#e2a51a}.pedal small{display:block;font-size:9px;color:#bdd0d8}.pedal.reverse{width:58px;height:58px;border-radius:50%;font-size:14px}.steerWrap{pointer-events:auto;width:min(230px,30vw);height:48px;border-radius:24px;background:rgba(12,25,34,.78);border:2px solid rgba(255,255,255,.14);padding:6px}.steerWrap input{width:100%;height:100%;accent-color:#ffc934}.speedo{position:absolute;right:22px;bottom:112px;color:white;width:100px;text-align:right;text-shadow:0 2px 5px #000}.speedo strong{font-size:35px}.speedo small{display:block;font-weight:800}.mirror{position:absolute;right:20px;top:82px;width:180px;height:74px;border:5px solid #202e33;border-radius:6px;background:linear-gradient(#9ed1e8 0 38%,#577c45 39%);overflow:hidden;box-shadow:0 4px 12px #0006}.mirror canvas{width:100%;height:100%}.finish{position:absolute;left:50%;top:20%;transform:translateX(-50%) scale(.8);background:#111e23;color:white;border:3px solid #ffc934;border-radius:18px;padding:18px 24px;text-align:center;opacity:0;transition:.25s;pointer-events:none}.finish.show{opacity:1;transform:translateX(-50%) scale(1)}.finish h2{margin:0 0 8px}.finish button{border:0;border-radius:10px;padding:9px 18px;font-weight:900;background:#ffc934}.pause{pointer-events:auto;position:absolute;right:20px;bottom:18px;width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:rgba(12,25,34,.78);color:white;font-weight:900}@media(max-width:700px){.brand{font-size:14px}.stats{gap:4px}.pill{padding:7px 8px;font-size:11px}.mission{left:10px;top:58px;width:180px}.mirror{width:130px;height:58px;right:10px;top:120px}.controls{left:8px;right:8px}.pedal{width:64px;height:64px}.pedal.reverse{width:50px;height:50px}.steerWrap{width:180px}.speedo{right:12px;bottom:94px}}
+</style></head>
+<body>
+<canvas id="game"></canvas>
+<div class="hud">
+ <div class="topbar"><div class="brand">EURO HAUL<small>DAĞ YOLU • 7</small></div><div class="stats"><div class="pill">RENT: <span id="cash">4.850 ₺</span></div><div class="pill" id="time">18:42</div></div></div>
+ <div class="mission"><b>GÜNCEL SEFER</b><div>İnşaat alanına keresteyi taşı</div><div class="progress"><i id="progress"></i></div></div>
+ <div class="mirror"><canvas id="mirror"></canvas></div>
+ <div class="speedo"><strong id="speed">0</strong><small>KM/H</small></div>
+ <div class="controls"><div class="leftControls"><div class="steerWrap"><input id="steer" type="range" min="-1" max="1" step=".01" value="0" aria-label="Direksiyon"></div></div><div class="rightControls"><div class="pedal reverse" id="reverse">GERİ<small>R</small></div><div class="pedal" id="brake">FREN<small>SPACE</small></div><div class="pedal" id="gas">GAZ<small>W</small></div></div></div>
+ <button class="pause" id="pause">Ⅱ</button>
+ <div class="finish" id="finish"><h2>TESLİMAT TAMAMLANDI</h2><div>Ödül: <b>1.250 ₺</b></div><br><button id="again">YENİDEN BAŞLA</button></div>
+</div>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d'),mc=document.getElementById('mirror'),mctx=mc.getContext('2d');
+let W,H,DPR;
+function resize(){DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*DPR;canvas.height=H*DPR;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);mc.width=360;mc.height=150}addEventListener('resize',resize);resize();
+
+let truck={x:0,y:18,angle:0,speed:0,steer:0}; let trailer={x:-5,y:-8,angle:0}; let keys={};let paused=false,finished=false;let progress=0;
+function reset(){truck={x:0,y:18,angle:0,speed:0,steer:0};trailer={x:-5,y:-8,angle:0};progress=0;finished=false;document.getElementById('finish').classList.remove('show')}
+const steerEl=document.getElementById('steer');let dragging=false;steerEl.onpointerdown=()=>dragging=true;steerEl.onpointerup=()=>{dragging=false};steerEl.oninput=()=>truck.steer=+steerEl.value;
+function hold(id,fn){let el=document.getElementById(id);let set=e=>{e.prevent(e);el.classList.add('on');fn(true)};el.addEventListener('pointerdown',set);el.addEventListener('pointerup',()=>{el.classList.remove('on');fn(false)});el.addEventListener('pointercancel',()=>{el.classList.remove('on');fn(false)});el.addEventListener('pointerleave',()=>{el.classList.remove('on');fn(false)})}
+let gas=false,rev=false,brake=false;hold('gas',v=>gas=v);hold('reverse',v=>rev=v);hold('brake',v=>brake=v);
+addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='ArrowLeft')keys.ArrowLeft=true;if(e.code==='ArrowRight')keys.ArrowRight=true});addEventListener('keyup',e=>keys[e.code]=false);
+document.getElementById('pause').onclick=()=>paused=!paused;document.getElementById('again').onclick=reset;
+
+function update(dt){if(paused||finished)return;
+ let left=keys.ArrowLeft||keys.KeyA,right=keys.KeyRight||keys.KeyD,gasIn=gas||keys.KeyW||keys.ArrowUp,revIn=rev||keys.KeyS||keys.ArrowDown,brakeIn=brake||keys.Space;
+ let throttle=gasIn?1:revIn?-1:0;if(brakeIn)truck.speed*=Math.pow(.08,dt);
+ if(!brakeIn){truck.speed+=throttle*18*dt;truck.speed*=Math.pow(.992,dt*60)}truck.speed=Math.max(-12,Math.min(28,truck.speed));
+ let desired=(left?1:right?-1:0)+(steerEl.value?+steerEl.value:0);truck.steer+=(Math.max(-1,Math.min(1,desired))-truck.steer)*Math.min(1,dt*5);
+ if(!dragging&&!left&&!right)truck.steer*=Math.pow(.94,dt*60);
+ let yaw=truck.steer*truck.speed*.018*dt;truck.angle+=yaw;
+ truck.x+=Math.sin(truck.angle)*truck.speed*dt;truck.y+=Math.cos(truck.angle)*truck.speed*dt;
+ let dx=truck.x-trailer.x,dy=truck.y-trailer.y,dist=Math.sqrt(dx*dx+dy*dy)||1;
+ let target=Math.atan2(dx,dy);trailer.angle+=(target-trailer.angle)*Math.min(1,dt*2.8);trailer.x+=dx*Math.min(1,dt*truck.speed*.15);trailer.y+=dy*Math.min(1,dt*truck.speed*.15);
+ if(Math.abs(truck.x)>500||Math.abs(truck.y)>500){truck.speed*=.7}
+ progress=Math.max(progress,Math.min(100,(truck.y+18)*1.05));document.getElementById('progress').style.width=progress+'%';
+ if(truck.y>75&&progress>99){finished=true;document.getElementById('finish').classList.add('show')}
+ document.getElementById('speed').textContent=Math.round(Math.abs(truck.speed*3.6));
+}
+
+function worldToScreen(x,y,cx,cy){let dx=x-cx,dy=y-cy,ca=Math.cos(-truck.angle),sa=Math.sin(-truck.angle);let rx=dx*ca-dy*sa,ry=dx*sa+dy*ca;return [W/2+rx*7,H*.58+ry*7]} 
+function road(){let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#9dd0e1');g.addColorStop(.55,'#75a060');g.addColorStop(1,'#5f8e4d');ctx.fillStyle=g;ctx.fillRect(0,0,W,H)
+ // road with curved route
+ ctx.save();ctx.translate(W/2,H*.58);ctx.rotate(-truck.angle);ctx.translate(-truck.x*7,-truck.y*7);
+ ctx.fillStyle='#5c6863';ctx.beginPath();ctx.moveTo(-320,-1500);ctx.bezierCurveTo(-180,-950,-270,-500,-120,-100);ctx.bezierCurveTo(-20,260,180,520,100,1500);ctx.lineTo(330,1500);ctx.bezierCurveTo(400,520,230,250,130,-100);ctx.bezierCurveTo(0,-600,-20,-950,-100,-1500);ctx.closePath();ctx.fill();
+ ctx.strokeStyle='#e8dcb1';ctx.lineWidth=5;ctx.setLineDash([24,20]);ctx.beginPath();ctx.moveTo(-210,-1500);ctx.bezierCurveTo(-80,-950,-160,-500,-10,-100);ctx.bezierCurveTo(90,260,290,520,210,1500);ctx.stroke();ctx.setLineDash([]);
+ // scenery
+ for(let i=-30;i<120;i++){let z=i*15;let sx=((i*137)%700)-350, sy=z-truck.y*7;ctx.fillStyle=i%3?'#315e38':'#4d743a';ctx.beginPath();ctx.arc(sx,sy,18+(i%5)*3,0,7);ctx.fill()}
+ ctx.restore();}
+function poly(points,fill,stroke){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}}
+function vehicle(x,y,ang,isTrailer=false){ctx.save();ctx.translate(W/2+(x-truck.x)*7*Math.cos(-truck.angle)-(y-truck.y)*7*-Math.sin(-truck.angle),H*.58+(x-truck.x)*7*Math.sin(-truck.angle)+(y-truck.y)*7*Math.cos(-truck.angle));ctx.rotate(ang-truck.angle);ctx.scale(1.2,1.2);
+ if(isTrailer){poly([[-18,-32],[18,-32],[15,36],[-15,36]],'#8b5b35','#40271d');for(let i=-22;i<25;i+=12){ctx.fillStyle='#cba267';ctx.fillRect(-14,i,28,3)}ctx.fillStyle='#202526';ctx.fillRect(-24,-22,7,12);ctx.fillRect(17,-22,7,12);ctx.fillRect(-24,20,7,12);ctx.fillRect(17,20,7,12)}else{ctx.fillStyle='#202a2c';ctx.fillRect(-15,-24,30,48);poly([[-13,-23],[13,-23],[10,-13],[-10,-13]],'#c8dde2','#1c2729');ctx.fillStyle='#d99b22';ctx.fillRect(-15,-20,30,34);ctx.fillStyle='#f2c44e';ctx.fillRect(-12,-32,24,12);ctx.fillStyle='#2b3435';ctx.fillRect(-10,-35,20,5);ctx.fillStyle='#111';ctx.fillRect(-21,-18,6,12);ctx.fillRect(15,-18,6,12);ctx.fillRect(-21,14,6,12);ctx.fillRect(15,14,6,12);ctx.fillStyle='#d5edf2';ctx.fillRect(-8,-29,16,8)}ctx.restore()}
+function draw(){road();vehicle(trailer.x,trailer.y,trailer.angle,true);vehicle(truck.x,truck.y,truck.angle,false);drawMirror();requestAnimationFrame(loop)}
+function drawMirror(){mctx.fillStyle='#8dc2d8';mctx.fillRect(0,0,360,150);mctx.fillStyle='#5c6863';mctx.beginPath();mctx.moveTo(0,150);mctx.bezierCurveTo(40,80,120,80,180,150);ctx; mctx.fillStyle='#c9a75b';mctx.fillRect(155,75,50,75);mctx.fillStyle='#202526';mctx.fillRect(145,88,70,62);mctx.fillStyle='#d99b22';mctx.fillRect(145,40,70,54);mctx.fillStyle='#111';mctx.fillRect(140,95,14,22);mctx.fillRect(206,95,14,22)}
+let last=performance.now();function loop(now){let dt=Math.min(.033,(now-last)/1000);last=now;update(dt);draw()}reset();requestAnimationFrame(loop);
+</script>
+</body></html>
